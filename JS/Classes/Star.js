@@ -58,16 +58,16 @@
             this.accX = Math.cos(radians) * this._speed;
             this.accY = Math.sin(radians) * this._speed;
 
-            if (this.y < 0 - this.height) {
-                this.setPosition(this.x, this.stage.canvas.height + this.height);
-            } else if (this.y > this.stage.canvas.height + this.height) {
-                this.setPosition(this.x, 0 - this.height);
+            if (this.y < 0) {
+                this.setPosition(this.x, this.stage.canvas.height);
+            } else if (this.y > this.stage.canvas.height) {
+                this.setPosition(this.x, 0);
             }
 
-            if (this.x < 0 - this.width) {
-                this.setPosition(this.stage.canvas.width + this.width, this.y);
-            } else if (this.x > this.stage.canvas.width + this.width) {
-                this.setPosition(0 - this.width, this.y);
+            if (this.x < 0) {
+                this.setPosition(this.stage.canvas.width, this.y);
+            } else if (this.x > this.stage.canvas.width) {
+                this.setPosition(0, this.y);
             }
             // Update the horisontal position (x)
             this.x += (this.accY) / 2;
