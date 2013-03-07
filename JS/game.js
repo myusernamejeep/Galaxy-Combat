@@ -4,7 +4,24 @@
     var myCanvas;
     var TitleView;
     var enemies = [];
+    var gamepadSupportAvailable = window.Modernizr.gamepads;
+    if (gamepadSupportAvailable) {
+        window.console.log("Your browser supports a gamepad, why not connect one up?");
+        // inform user they can connect a gamepad up and use it to play
+        var gamepad = new window.Gamepad();
+        var previousLeftAnalogDegrees = null;
+        var AXIS_THRESHOLD = 0.75;
+        if (gamepad.init()) {
+            gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
+                if (e.mapping === 16) {
+                    removeMenu();
+                    removeTitleScreen();
+                    newGame();
+                }
+            });
 
+        }
+    }
 //    var gamepadSupportAvailable = Modernizr.gamepads;
 //    if (gamepadSupportAvailable) {
 //        console.log("Your browser supports a gamepad, why not connect one up?");
@@ -137,43 +154,21 @@
     this.newGame = function () {
         if (ship === undefined) {
             ship = new window.Ship("Assets/ship2.png", 100, 25, 5, "normal", 7, 2, 10, stage);
-        }
-        window.ship = ship;
 
-        for (var i = 1; i <= 5; i ++) {
-            enemies.push(new window.Star("Star" + i ,stage));
-            enemies[i-1].setPosition(Math.floor(Math.random() * myCanvas.width), Math.floor(Math.random() * myCanvas.height));
-            stage.addChild(enemies[i-1]);
-        }
-        window.enemies = enemies;
-
-        ship.setPosition(myCanvas.width/2, myCanvas.height/2);
-        stage.addChild(ship);
-        stage.update();
-
-        window.createjs.Ticker.addListener(this);
-        document.onkeydown = function(e) {
-            ship.onKeyDown(ship, e);
-        };
-
-        document.onkeyup = function(e) {
-            ship.onKeyUp(ship, e);
-        };
-
-        var gamepadSupportAvailable = window.Modernizr.gamepads;
-        if (gamepadSupportAvailable) {
-            window.console.log("Your browser supports a gamepad, why not connect one up?");
-            // inform user they can connect a gamepad up and use it to play
-            var gamepad = new window.Gamepad();
-            var previousLeftAnalogDegrees = null;
-            var AXIS_THRESHOLD = 0.75;
+            window.createjs.Ticker.addListener(this);
+            document.onkeydown = function(e) {
+                ship.onKeyDown(ship, e);
+            };
+            document.onkeyup = function(e) {
+                ship.onKeyUp(ship, e);
+            };
 
             if (gamepad.init()) {
-                gamepad.bind(window.Gamepad.Event.CONNECTED, function(device) {
+                gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
                     window.console.log("connected a gamepad!", device);
                 });
 
-                gamepad.bind(window.Gamepad.Event.DISCONNECTED, function(device) {
+                gamepad.bind(Gamepad.Event.DISCONNECTED, function(device) {
                     // pseudocode
 //                if (game playing) {
 //                    pause game;
@@ -181,18 +176,30 @@
 //                alert user that gamepad disconnected
                 });
 
-                gamepad.bind(window.Gamepad.Event.UNSUPPORTED, function(device) {
+                gamepad.bind(Gamepad.Event.UNSUPPORTED, function(device) {
                     // inform user that we don't have a mapping for their controller so it might not work as expected
                 });
 
-                gamepad.bind(window.Gamepad.Event.BUTTON_UP, function(e) {
-                    if (e.control === "RB1") {
-                        ship.fire(ship.rotation);
+                gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
+                    if (e.mapping === 5) {
+//                        ship.fire(ship.rotation);
+                        var rightXDelta = gamepad.gamepads[0].state.RIGHT_STICK_X;
+                        var rightYDelta = gamepad.gamepads[0].state.RIGHT_STICK_Y;
+                        var rightArcTangentRadians = Math.atan2(rightXDelta, rightYDelta);
+
+                        var rightArcTangentDegrees = Math.floor(180 / Math.PI * rightArcTangentRadians);
+                        var rightAiming = (rightArcTangentDegrees * -1) + 180;
+
+                        if (gamepad.gamepads[0].state.RIGHT_STICK_X > AXIS_THRESHOLD ||
+                            gamepad.gamepads[0].state.RIGHT_STICK_X < -AXIS_THRESHOLD ||
+                            gamepad.gamepads[0].state.RIGHT_STICK_Y > AXIS_THRESHOLD ||
+                            gamepad.gamepads[0].state.RIGHT_STICK_Y < -AXIS_THRESHOLD) {
+                        }
+                        ship.fire(rightAiming);
                     }
                 });
 
-                gamepad.bind(window.Gamepad.Event.TICK, function(gamepads) {
-
+                gamepad.bind(Gamepad.Event.TICK, function(gamepads) {
 
                     var rightXDelta = gamepad.gamepads[0].state.RIGHT_STICK_X;
                     var rightYDelta = gamepad.gamepads[0].state.RIGHT_STICK_Y;
@@ -230,6 +237,13 @@
                 });
             }
         }
+        window.ship = ship;
+
+        this.createStarEnemies(10);
+
+        ship.setPosition(myCanvas.width/2, myCanvas.height/2);
+        stage.addChild(ship);
+        stage.update();
 
     };
 
@@ -240,11 +254,23 @@
         showTitleScreen();
     };
 
+    this.createStarEnemies = function(amount) {
+        for (var i = 1; i <= amount; i ++) {
+            enemies.push(new window.Star("Star" + i ,stage));
+            enemies[i-1].setPosition(Math.floor(Math.random() * myCanvas.width), Math.floor(Math.random() * myCanvas.height));
+            stage.addChild(enemies[i-1]);
+        }
+        window.enemies = enemies;
+    };
+
     this.tick = function(){
         stage.tick();
         if (ship !== undefined) {
             if (ship._alive) {
                 ship.checkMovement(ship);
+                if (window.enemies.length === 0) {
+                    createStarEnemies(5);
+                }
             }
             else {
                 ship._alive = true;
