@@ -70,6 +70,8 @@
                 if (collision) {
                     window.enemies[i].die();
                     this.die();
+                    window.addPoints();
+
                     return true;
                 }
             }
