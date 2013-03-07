@@ -239,11 +239,12 @@
         }
         window.ship = ship;
 
-        this.createStarEnemies(10);
 
         ship.setPosition(myCanvas.width/2, myCanvas.height/2);
+        this.createStarEnemies(10);
         stage.addChild(ship);
         stage.update();
+
 
     };
 
@@ -257,7 +258,16 @@
     this.createStarEnemies = function(amount) {
         for (var i = 1; i <= amount; i ++) {
             enemies.push(new window.Star("Star" + i ,stage));
-            enemies[i-1].setPosition(Math.floor(Math.random() * myCanvas.width), Math.floor(Math.random() * myCanvas.height));
+            var x = Math.floor(Math.random() * myCanvas.width);
+            while (ship.x - 20 < x && x < ship.x + 20) {                   //between ship.x - 10 & ship.x + 10
+                x = Math.floor(Math.random() * myCanvas.width);
+            }
+
+            var y = Math.floor(Math.random() * myCanvas.height);
+            while (ship.y - 20 < y && y < ship.y + 20) {                   //between ship.x - 10 & ship.x + 10
+                y = Math.floor(Math.random() * myCanvas.width);
+            }
+            enemies[i-1].setPosition(x, y);
             stage.addChild(enemies[i-1]);
         }
         window.enemies = enemies;
@@ -267,7 +277,8 @@
         stage.tick();
         if (ship !== undefined) {
             if (ship._alive) {
-                ship.checkMovement(ship);
+                ship.checkMovement();
+                ship.checkBounds();
                 if (window.enemies.length === 0) {
                     createStarEnemies(5);
                 }
