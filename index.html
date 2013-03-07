@@ -6,9 +6,17 @@
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);} /* Removes Mobile Highlight */
         html, body { width:100%; height:100%; } /* just to be sure these are full screen */
         canvas { display:block; background-color: #000;} /* To remove the scrollbars */
+        #score {
+            position: absolute;
+            z-index: 100;
+            left: 0px;
+            top: 0px;
+            color: #5ab6cf;
+        }
     </style>
 </head>
 <body onLoad="javascript:init();">
+    <div id="score">Score:</div>
 
     <script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
