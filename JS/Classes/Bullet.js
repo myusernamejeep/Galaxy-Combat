@@ -82,6 +82,14 @@
             window.ship.bullets.splice(i,1);
             window.stage.update();
         };
+
+        Bullet.prototype.isOnStage = function() {
+            if (this.y < 0 || this.y > window.stage.canvas.height || this.x > window.stage.canvas.width || this.x < 0) {
+                return false;
+            } else {
+                return true;
+            }
+        };
     };
 
 
@@ -89,8 +97,13 @@
     Bullet.prototype._tick = function () {
         //call to _tick method from parent class
         this.Bitmap_tick();
-        this.move();
-        this.isHit();
+        if (this.isOnStage()){
+            this.move();
+            this.isHit();
+        } else {
+            this.die();
+        }
+
         //console.log("Ship Ticked");
     };
     window.Bullet = Bullet;
