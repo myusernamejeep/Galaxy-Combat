@@ -58,17 +58,6 @@
             this.accX = Math.cos(radians) * this._speed;
             this.accY = Math.sin(radians) * this._speed;
 
-            if (this.y < 0) {
-                this.setPosition(this.x, this.stage.canvas.height);
-            } else if (this.y > this.stage.canvas.height) {
-                this.setPosition(this.x, 0);
-            }
-
-            if (this.x < 0) {
-                this.setPosition(this.stage.canvas.width, this.y);
-            } else if (this.x > this.stage.canvas.width) {
-                this.setPosition(0, this.y);
-            }
             // Update the horisontal position (x)
             this.x += (this.accY) / 2;
 
@@ -86,12 +75,38 @@
             stage.update();
         };
 
+        Star.prototype.inBounds = function() {
+            if (this.y < 0) {
+                this.rotation -= 90;
+//                this.accX *= -1;
+//                this.accY *= -1;
+            } else if (this.y > this.stage.canvas.height) {
+                this.rotation -= 90;
+//                this.accX *= -1;
+//                this.accY *= -1;
+            }
+
+            if (this.x < 0) {
+                this.rotation -= 90;
+//                this.accX *= -1;
+//                this.accY *= -1;
+            } else if (this.x > this.stage.canvas.width) {
+                this.rotation -= 90;
+//                this.accX *= -1;
+//                this.accY *= -1;
+            }
+            // making the rotation always stay within 0 - 360
+            if (this.rotation >= 360) { this.rotation -= 360;}
+            if (this.rotation < 0) { this.rotation += 360;}
+        };
+
     };
 
     Star.prototype._tick = function () {
         //call to _tick method from parent class
         this.Bitmap_tick();
         //this.setRotation(Math.floor(Math.random() * 360));
+        this.inBounds();
         this.moveForward();
     };
 
