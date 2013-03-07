@@ -256,8 +256,8 @@
     };
 
     this.createStarEnemies = function(amount) {
-        for (var i = 1; i <= amount; i ++) {
-            enemies.push(new window.Star("Star" + i ,stage));
+        for (var i = 0; i <= amount; i ++) {
+            enemies.push(new window.Star("Star" + (i + 1) ,stage));
             var x = Math.floor(Math.random() * myCanvas.width);
             while (ship.x - 20 < x && x < ship.x + 20) {                   //between ship.x - 10 & ship.x + 10
                 x = Math.floor(Math.random() * myCanvas.width);
@@ -267,8 +267,8 @@
             while (ship.y - 20 < y && y < ship.y + 20) {                   //between ship.x - 10 & ship.x + 10
                 y = Math.floor(Math.random() * myCanvas.width);
             }
-            enemies[i-1].setPosition(x, y);
-            stage.addChild(enemies[i-1]);
+            enemies[i].setPosition(x, y);
+            stage.addChild(enemies[i]);
         }
         window.enemies = enemies;
     };
