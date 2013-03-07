@@ -175,11 +175,9 @@
             this.x += (this.accY) / 2;
 
             // Update the vertical position (y)
-            // Subtracted because coordinate system starts in upper right
+            // Subtracted because coordinate system starts in upper left
             // and has positive y going downwards.
             this.y -= (this.accX) / 2;
-
-            window.console.log(this.x,this.y);
         };
 
         Ship.prototype.fire = function(degree) {

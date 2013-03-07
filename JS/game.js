@@ -242,7 +242,8 @@
 
 
         ship.setPosition(myCanvas.width/2, myCanvas.height/2);
-        this.createStarEnemies(10);
+        this.createStarEnemies(5);
+        this.createXWingEnemies(5);
         stage.addChild(ship);
         stage.update();
 
@@ -257,6 +258,7 @@
     };
 
     this.createStarEnemies = function(amount) {
+        var length = enemies.length;
         for (var i = 0; i <= amount; i ++) {
             enemies.push(new window.Star("Star" + (i + 1) ,stage));
             var x = Math.floor(Math.random() * myCanvas.width);
@@ -268,11 +270,31 @@
             while (ship.y - 20 < y && y < ship.y + 20) {                   //between ship.x - 10 & ship.x + 10
                 y = Math.floor(Math.random() * myCanvas.width);
             }
-            enemies[i].setPosition(x, y);
-            stage.addChild(enemies[i]);
+            enemies[length + i].setPosition(x, y);
+            stage.addChild(enemies[length + i]);
         }
         window.enemies = enemies;
     };
+
+    this.createXWingEnemies = function(amount) {
+        var length = enemies.length;
+        for (var i = 0; i <= amount; i ++) {
+            enemies.push(new window.XWing("XWing" + (i + 1) ,stage));
+            var x = Math.floor(Math.random() * myCanvas.width);
+            while (ship.x - 20 < x && x < ship.x + 20) {                   //between ship.x - 10 & ship.x + 10
+                x = Math.floor(Math.random() * myCanvas.width);
+            }
+
+            var y = Math.floor(Math.random() * myCanvas.height);
+            while (ship.y - 20 < y && y < ship.y + 20) {                   //between ship.x - 10 & ship.x + 10
+                y = Math.floor(Math.random() * myCanvas.width);
+            }
+            enemies[length + i].setPosition(x, y);
+            stage.addChild(enemies[length + i]);
+        }
+        window.enemies = enemies;
+    };
+
     this.addPoints = function() {
         score += 10;
         var scoreDiv = document.getElementById("score");
@@ -281,12 +303,15 @@
 
     this.tick = function(){
         stage.tick();
+        if (stage.tick % 1000 === 0) {
+            console.log("1 second");
+        }
         if (ship !== undefined) {
             if (ship._alive) {
                 ship.checkMovement();
                 ship.checkBounds();
                 if (window.enemies.length === 0) {
-                    createStarEnemies(5);
+                    window.createStarEnemies(5);
                 }
             }
             else {

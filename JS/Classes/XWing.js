@@ -1,18 +1,25 @@
+/**
+ * Created with JetBrains WebStorm.
+ * User: jakechampion
+ * Date: 07/03/2013
+ * Time: 21:47
+ * To change this template use File | Settings | File Templates.
+ */
 (function (window) {
     // The class receives parameteres that are passed to the initialize method (constructor)
-    function Star(name, stage) {
+    function XWing(name, stage) {
         this.initialize(name, stage);
     }
 
     //Inheritance from Bitmap
-    Star.prototype = new window.createjs.Bitmap();
-    Star.prototype.Bitmap_initialize = Star.prototype.initialize;
-    Star.prototype.Bitmap_tick = Star.prototype._tick;
+    XWing.prototype = new window.createjs.Bitmap();
+    XWing.prototype.Bitmap_initialize = XWing.prototype.initialize;
+    XWing.prototype.Bitmap_tick = XWing.prototype._tick;
 
     // The initalize method register the class variables with the passed params
-    Star.prototype.initialize = function (name, stage) {
+    XWing.prototype.initialize = function (name, stage) {
         //call to initialize() method from parent class
-        this.Bitmap_initialize("Assets/Enemies/Stars/1.png");
+        this.Bitmap_initialize("Assets/Enemies/XWings/1.png");
         this.name = name;
         this.snapToPixel = true;
         this.width = this.image.width;
@@ -28,12 +35,12 @@
         this.accY = 0;
         this._alive = true;
 
-        Star.prototype.setPosition = function(x,y) {
+        XWing.prototype.setPosition = function(x,y) {
             this.x = x;
             this.y = y;
         };
 
-        Star.prototype.setRotation = function(degree) {
+        XWing.prototype.setRotation = function(degree) {
             var x;
             var y;
 
@@ -53,7 +60,7 @@
             }
         };
 
-        Star.prototype.moveForward = function() {
+        XWing.prototype.moveForward = function() {
             var radians = this.rotation * (Math.PI / 180.0);
             this.accX = Math.cos(radians) * this._speed;
             this.accY = Math.sin(radians) * this._speed;
@@ -68,14 +75,14 @@
         };
         this.rotation = (Math.floor(Math.random() * 360));
 
-        Star.prototype.die = function() {
+        XWing.prototype.die = function() {
             stage.removeChild(this);
             var i = window.enemies.indexOf(this);
             window.enemies.splice(i,1);
             stage.update();
         };
 
-        Star.prototype.inBounds = function() {
+        XWing.prototype.inBounds = function() {
             if (this.y < 0) {
                 this.rotation -= 90;
 //                this.accX *= -1;
@@ -102,7 +109,7 @@
 
     };
 
-    Star.prototype._tick = function () {
+    XWing.prototype._tick = function () {
         //call to _tick method from parent class
         this.Bitmap_tick();
         //this.setRotation(Math.floor(Math.random() * 360));
@@ -110,5 +117,5 @@
         this.moveForward();
     };
 
-    window.Star = Star;
+    window.XWing = XWing;
 } (window));
