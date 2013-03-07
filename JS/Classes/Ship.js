@@ -76,67 +76,64 @@
             }
         };
 
-        Ship.prototype.checkMovement = function(ship) {
+        Ship.prototype.checkMovement = function() {
 
             // making the rotation always stay within 0 - 360
-            if (ship.rotation >= 360) { ship.rotation -= 360;}
-            if (ship.rotation < 0) { ship.rotation += 360;}
+            if (this.rotation >= 360) { this.rotation -= 360;}
+            if (this.rotation < 0) { this.rotation += 360;}
 
-            if(ship._moveLeft)
+            if(this._moveLeft)
             {
-                ship.rotation -= ship._rotationSpeed;
+                this.rotation -= this._rotationSpeed;
             }
-            else if(ship._moveRight)
+            else if(this._moveRight)
             {
-                ship.rotation += ship._rotationSpeed;
+                this.rotation += this._rotationSpeed;
             }
 
-            if(ship._moveUp)
+            if(this._moveUp)
             {
-                    var radians = ship.rotation * (Math.PI / 180.0);
-                    var accX = Math.cos(radians) * ship._speed;
-                    var accY = Math.sin(radians) * ship._speed;
-
-                    if (this.y < 0) {
-                        this.setPosition(this.x, this.stage.canvas.height);
-                    } else if (this.y > this.stage.canvas.height) {
-                        this.setPosition(this.x, 0);
-                    }
-
-                    if (this.x < 0) {
-                        this.setPosition(this.stage.canvas.width, this.y);
-                    } else if (this.x > this.stage.canvas.width) {
-                        this.setPosition(0, this.y);
-                    }
-                    // Update the horisontal position (x)
-                    ship.x += (accY) / 2;
-
-                    // Update the vertical position (y)
-                    // Subtracted because coordinate system starts in upper right
-                    // and has positive y going downwards.
-                    ship.y -= (accX) / 2;
+                this.moveForward();
             }
-            else if(ship._moveDown)
+            else if(this._moveDown)
             {
-                //if (this.inBounds()) {
-                    var radians = ship.rotation * (Math.PI / 180.0);
-                    var accX = Math.cos(radians) * ship._speed;
-                    var accY = Math.sin(radians) * ship._speed;
+                var radians = this.rotation * (Math.PI / 180.0);
+                this.accX = Math.cos(radians) * this._speed;
+                this.accY = Math.sin(radians) * this._speed;
 
-                    // Update the horisontal position (x)
-                    ship.x -= (accY) / 2;
+                // Update the horisontal position (x)
+                this.x -= (this.accY) / 2;
 
-                    // Update the vertical position (y)
-                    // Subtracted because coordinate system starts in upper right
-                    // and has positive y going downwards.
-                    ship.y += (accX) / 2;
+                // Update the vertical position (y)
+                // Subtracted because coordinate system starts in upper right
+                // and has positive y going downwards.
+                this.y += (this.accX) / 2;
+            }
 
-//                if(ship.y + ship.regY + ship._speed < 300)
-//                {
-//                    ship.y += ship._speed;
-//                    //BG_SPEED = 3;
-//                }
-                //}
+//            if (this.y < 0) {
+//                this.setPosition(this.x, this.stage.canvas.height);
+//            } else if (this.y > this.stage.canvas.height) {
+//                this.setPosition(this.x, 0);
+//            }
+//
+//            if (this.x < 0) {
+//                this.setPosition(this.stage.canvas.width, this.y);
+//            } else if (this.x > this.stage.canvas.width) {
+//                this.setPosition(0, this.y);
+//            }
+        };
+
+        Ship.prototype.checkBounds = function() {
+            if (this.y < 0) {
+                this.setPosition(this.x, this.stage.canvas.height);
+            } else if (this.y > this.stage.canvas.height) {
+                this.setPosition(this.x, 0);
+            }
+
+            if (this.x < 0) {
+                this.setPosition(this.stage.canvas.width, this.y);
+            } else if (this.x > this.stage.canvas.width) {
+                this.setPosition(0, this.y);
             }
         };
 
@@ -174,17 +171,6 @@
             this.accX = Math.cos(radians) * this._speed;
             this.accY = Math.sin(radians) * this._speed;
 
-            if (this.y < 0 - this.height) {
-                this.setPosition(this.x, this.stage.canvas.height + this.height);
-            } else if (this.y > this.stage.canvas.height + this.height) {
-                this.setPosition(this.x, 0 - this.height);
-            }
-
-            if (this.x < 0 - this.width) {
-                this.setPosition(this.stage.canvas.width + this.width, this.y);
-            } else if (this.x > this.stage.canvas.width + this.width) {
-                this.setPosition(0 - this.width, this.y);
-            }
             // Update the horisontal position (x)
             this.x += (this.accY) / 2;
 
@@ -192,6 +178,8 @@
             // Subtracted because coordinate system starts in upper right
             // and has positive y going downwards.
             this.y -= (this.accX) / 2;
+
+            window.console.log(this.x,this.y);
         };
 
         Ship.prototype.fire = function(degree) {
