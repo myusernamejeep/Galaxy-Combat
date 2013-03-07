@@ -81,6 +81,9 @@
 
         Star.prototype.die = function() {
             stage.removeChild(this);
+            var i = window.enemies.indexOf(this);
+            window.enemies.splice(i,1);
+            stage.update();
         };
 
     };
