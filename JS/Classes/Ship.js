@@ -113,28 +113,28 @@
                     // and has positive y going downwards.
                     ship.y -= (accX) / 2;
             }
-//            else if(ship._moveDown)
-//            {
-//                if (this.inBounds()) {
-//                    var radians = ship.rotation * (Math.PI / 180.0);
-//                    var accX = Math.cos(radians) * ship._speed;
-//                    var accY = Math.sin(radians) * ship._speed;
-//
-//                    // Update the horisontal position (x)
-//                    ship.x -= (accY) ;/// 2;
-//
-//                    // Update the vertical position (y)
-//                    // Subtracted because coordinate system starts in upper right
-//                    // and has positive y going downwards.
-//                    ship.y += (accX) ;// 2;
-//
-////                if(ship.y + ship.regY + ship._speed < 300)
-////                {
-////                    ship.y += ship._speed;
-////                    //BG_SPEED = 3;
-////                }
+            else if(ship._moveDown)
+            {
+                //if (this.inBounds()) {
+                    var radians = ship.rotation * (Math.PI / 180.0);
+                    var accX = Math.cos(radians) * ship._speed;
+                    var accY = Math.sin(radians) * ship._speed;
+
+                    // Update the horisontal position (x)
+                    ship.x -= (accY) / 2;
+
+                    // Update the vertical position (y)
+                    // Subtracted because coordinate system starts in upper right
+                    // and has positive y going downwards.
+                    ship.y += (accX) / 2;
+
+//                if(ship.y + ship.regY + ship._speed < 300)
+//                {
+//                    ship.y += ship._speed;
+//                    //BG_SPEED = 3;
 //                }
-//            }
+                //}
+            }
         };
 
         Ship.prototype.setPosition = function(x,y) {
@@ -145,46 +145,25 @@
         Ship.prototype.setRotation = function(degree) {
 
 
-            var x;
-            var y;
-
-            if (this.rotation - 180 < 0) { // if rotation between 0 - 179
-                if (degree < this.rotation || degree > this.rotation + 180) {
-                    this.rotation -= this._rotationSpeed;
-                } else {
-                    this.rotation += this._rotationSpeed;
-                }
-            } else if (this.rotation - 180 < 180) { // else rotation is between 180 - 360
-                if (degree < this.rotation && degree > this.rotation - 180) {
-                    this.rotation -= this._rotationSpeed;
-                }
-                else {
-                    this.rotation += this._rotationSpeed;
-                }
-            }
-
-//            if (degree < x && degree > y - 180)
-//            {
-//                this.rotation -= this._rotationSpeed;
-//            } else if (degree > x && degree < y - 180) {
-//                this.rotation += this._rotationSpeed;
+//            var x;
+//            var y;
+//
+//            if (this.rotation - 180 < 0) { // if rotation between 0 - 179
+//                if (degree < this.rotation || degree > this.rotation + 180) {
+//                    this.rotation -= this._rotationSpeed;
+//                } else {
+//                    this.rotation += this._rotationSpeed;
+//                }
+//            } else if (this.rotation - 180 < 180) { // else rotation is between 180 - 360
+//                if (degree < this.rotation && degree > this.rotation - 180) {
+//                    this.rotation -= this._rotationSpeed;
+//                }
+//                else {
+//                    this.rotation += this._rotationSpeed;
+//                }
 //            }
 
-//            if (degree < this.rotation && degree > this.rotation - 180)
-//            {
-//                this.rotation -= this._rotationSpeed;
-//            } else if (degree > this.rotation && degree < this.rotation - 180) {
-//                this.rotation += this._rotationSpeed;
-//            }
-
-//            var mod = degree % this.rotation;
-//           while (this.rotation < degree) {
-//                this.rotation++;
-//           }
-//            while (this.rotation > degree) {
-//                this.rotation--;
-//            }
-//            this.rotation += mod;
+           this.rotation = degree;
         };
 
         Ship.prototype.moveForward = function() {
