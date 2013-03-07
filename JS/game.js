@@ -4,6 +4,7 @@
     var myCanvas;
     var TitleView;
     var enemies = [];
+    var score = 0;
     var gamepadSupportAvailable = window.Modernizr.gamepads;
     if (gamepadSupportAvailable) {
         window.console.log("Your browser supports a gamepad, why not connect one up?");
@@ -271,6 +272,11 @@
             stage.addChild(enemies[i]);
         }
         window.enemies = enemies;
+    };
+    this.addPoints = function() {
+        score += 10;
+        var scoreDiv = document.getElementById("score");
+        scoreDiv.innerText = "Score: " + score;
     };
 
     this.tick = function(){
