@@ -37,6 +37,9 @@
         this.accY = 0;
         this._alive = true;
         this.bullets = [];
+        this.x = this.width;
+        this.y = this.height;
+
         window.console.log("Ship initialized : health: " + this._health + " speed: " + this._speed + " mass: " + this._mass + " bullet type: " + this._bulletType + " bullet speed: " + this._bulletSpeed + " rate of fire: " + this._rateOfFire + " rotation speed: " + this._rotationSpeed);
 
         Ship.prototype.onKeyDown = function(ship, e) {
