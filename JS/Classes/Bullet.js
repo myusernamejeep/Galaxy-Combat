@@ -82,7 +82,7 @@
             window.stage.removeChild(this);
             var i = window.ship.bullets.indexOf(this);
             window.ship.bullets.splice(i,1);
-            window.stage.update();
+            //window.stage.update();
         };
 
         Bullet.prototype.isOnStage = function() {
