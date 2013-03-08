@@ -49,6 +49,7 @@
     var controls;
     var returnb;
     var star1;
+    var xWing1;
     var mutator1;
 ////////////////////////////////////////////////
     this.init = function() {
@@ -251,39 +252,39 @@
 
                 gamepad.bind(Gamepad.Event.TICK, function(gamepads) {
 
-                    var rightXDelta = gamepad.gamepads[0].state.RIGHT_STICK_X;
-                    var rightYDelta = gamepad.gamepads[0].state.RIGHT_STICK_Y;
-                    var rightArcTangentRadians = Math.atan2(rightXDelta, rightYDelta);
-
-                    var rightArcTangentDegrees = Math.floor(180 / Math.PI * rightArcTangentRadians);
-                    var rightAiming = (rightArcTangentDegrees * -1) + 180;
-
-                    if (gamepad.gamepads[0].state.RIGHT_STICK_X > AXIS_THRESHOLD ||
-                        gamepad.gamepads[0].state.RIGHT_STICK_X < -AXIS_THRESHOLD ||
-                        gamepad.gamepads[0].state.RIGHT_STICK_Y > AXIS_THRESHOLD ||
-                        gamepad.gamepads[0].state.RIGHT_STICK_Y < -AXIS_THRESHOLD) {
-                        ship.fire(rightAiming);
-                    }
-
-                    var leftXDelta = gamepad.gamepads[0].state.LEFT_STICK_X;
-                    var leftYDelta = gamepad.gamepads[0].state.LEFT_STICK_Y;
-                    var leftArcTangentRadians = Math.atan2(leftXDelta, leftYDelta);
-
-                    var leftArcTangentDegrees = Math.floor(180 / Math.PI * leftArcTangentRadians);
-                    var leftAiming = (leftArcTangentDegrees * -1 ) + 180;
-
-                    if (previousLeftAnalogDegrees !== leftAiming)
-                    {
-                        ship.setRotation(leftAiming);
-                        previousLeftAnalogDegrees = leftAiming;
-                    }
-
-                    if (gamepad.gamepads[0].state.LEFT_STICK_X > AXIS_THRESHOLD ||
-                        gamepad.gamepads[0].state.LEFT_STICK_X < -AXIS_THRESHOLD ||
-                        gamepad.gamepads[0].state.LEFT_STICK_Y > AXIS_THRESHOLD ||
-                        gamepad.gamepads[0].state.LEFT_STICK_Y < -AXIS_THRESHOLD) {
-                        ship.moveForward();
-                    }
+//                    var rightXDelta = gamepad.gamepads[0].state.RIGHT_STICK_X;
+//                    var rightYDelta = gamepad.gamepads[0].state.RIGHT_STICK_Y;
+//                    var rightArcTangentRadians = Math.atan2(rightXDelta, rightYDelta);
+//
+//                    var rightArcTangentDegrees = Math.floor(180 / Math.PI * rightArcTangentRadians);
+//                    var rightAiming = (rightArcTangentDegrees * -1) + 180;
+//
+//                    if (gamepad.gamepads[0].state.RIGHT_STICK_X > AXIS_THRESHOLD ||
+//                        gamepad.gamepads[0].state.RIGHT_STICK_X < -AXIS_THRESHOLD ||
+//                        gamepad.gamepads[0].state.RIGHT_STICK_Y > AXIS_THRESHOLD ||
+//                        gamepad.gamepads[0].state.RIGHT_STICK_Y < -AXIS_THRESHOLD) {
+//                        ship.fire(rightAiming);
+//                    }
+//
+//                    var leftXDelta = gamepad.gamepads[0].state.LEFT_STICK_X;
+//                    var leftYDelta = gamepad.gamepads[0].state.LEFT_STICK_Y;
+//                    var leftArcTangentRadians = Math.atan2(leftXDelta, leftYDelta);
+//
+//                    var leftArcTangentDegrees = Math.floor(180 / Math.PI * leftArcTangentRadians);
+//                    var leftAiming = (leftArcTangentDegrees * -1 ) + 180;
+//
+//                    if (previousLeftAnalogDegrees !== leftAiming)
+//                    {
+//                        ship.setRotation(leftAiming);
+//                        previousLeftAnalogDegrees = leftAiming;
+//                    }
+//
+//                    if (gamepad.gamepads[0].state.LEFT_STICK_X > AXIS_THRESHOLD ||
+//                        gamepad.gamepads[0].state.LEFT_STICK_X < -AXIS_THRESHOLD ||
+//                        gamepad.gamepads[0].state.LEFT_STICK_Y > AXIS_THRESHOLD ||
+//                        gamepad.gamepads[0].state.LEFT_STICK_Y < -AXIS_THRESHOLD) {
+//                        ship.moveForward();
+//                    }
                 });
             }
         }
@@ -374,6 +375,27 @@
         stage.tick();
         if (ship !== undefined) {
             if (ship._alive) {
+                //////////
+                var rightYDelta = gamepad.gamepads[0].state.RIGHT_STICK_Y;
+                var rightArcTangentRadians = Math.atan2(rightXDelta, rightYDelta);
+                var rightArcTangentDegrees = Math.floor(180 / Math.PI * rightArcTangentRadians);
+
+                    gamepad.gamepads[0].state.RIGHT_STICK_X < -AXIS_THRESHOLD ||
+                    gamepad.gamepads[0].state.RIGHT_STICK_Y < -AXIS_THRESHOLD) {
+                }
+                var leftYDelta = gamepad.gamepads[0].state.LEFT_STICK_Y;
+
+                var leftAiming = (leftArcTangentDegrees * -1 ) + 180;
+                    ship.setRotation(leftAiming);
+                }
+
+                if (gamepad.gamepads[0].state.LEFT_STICK_X > AXIS_THRESHOLD ||
+                    gamepad.gamepads[0].state.LEFT_STICK_X < -AXIS_THRESHOLD ||
+                    gamepad.gamepads[0].state.LEFT_STICK_Y > AXIS_THRESHOLD ||
+                    gamepad.gamepads[0].state.LEFT_STICK_Y < -AXIS_THRESHOLD) {
+                    ship.moveForward();
+                }
+                //////////
                 ship.checkMovement();
                 ship.checkBounds();
                 if (window.enemies.length === 0) {
