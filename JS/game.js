@@ -244,6 +244,9 @@
         ship.setPosition(myCanvas.width/2, myCanvas.height/2);
         this.createStarEnemies(5);
         this.createXWingEnemies(5);
+        //this.createStarEnemies(5, 50);
+        this.createXWingEnemies(5, 50);
+        //this.createMutatorEnemies(5, 50);
         stage.addChild(ship);
         stage.update();
 
@@ -258,16 +261,18 @@
     };
 
     this.createStarEnemies = function(amount) {
+    this.createStarEnemies = function(amount, radiusFromShip) {
         var length = enemies.length;
         for (var i = 0; i <= amount; i ++) {
+        for (var i = 0; i < amount; i ++) {
             enemies.push(new window.Star("Star" + (i + 1) ,stage));
             var x = Math.floor(Math.random() * myCanvas.width);
-            while (ship.x - 20 < x && x < ship.x + 20) {                   //between ship.x - 10 & ship.x + 10
+            while (ship.x - radiusFromShip < x && x < ship.x + radiusFromShip) {                   //between ship.x - 10 & ship.x + 10
                 x = Math.floor(Math.random() * myCanvas.width);
             }
 
             var y = Math.floor(Math.random() * myCanvas.height);
-            while (ship.y - 20 < y && y < ship.y + 20) {                   //between ship.x - 10 & ship.x + 10
+            while (ship.y - radiusFromShip < y && y < ship.y + radiusFromShip) {                   //between ship.x - 10 & ship.x + 10
                 y = Math.floor(Math.random() * myCanvas.width);
             }
             enemies[length + i].setPosition(x, y);
@@ -276,17 +281,36 @@
         window.enemies = enemies;
     };
 
-    this.createXWingEnemies = function(amount) {
+    this.createXWingEnemies = function(amount, radiusFromShip) {
         var length = enemies.length;
-        for (var i = 0; i <= amount; i ++) {
+        for (var i = 0; i < amount; i ++) {
             enemies.push(new window.XWing("XWing" + (i + 1) ,stage));
             var x = Math.floor(Math.random() * myCanvas.width);
-            while (ship.x - 20 < x && x < ship.x + 20) {                   //between ship.x - 10 & ship.x + 10
+            while (ship.x - radiusFromShip < x && x < ship.x + radiusFromShip) {                   //between ship.x - 10 & ship.x + 10
                 x = Math.floor(Math.random() * myCanvas.width);
             }
 
             var y = Math.floor(Math.random() * myCanvas.height);
-            while (ship.y - 20 < y && y < ship.y + 20) {                   //between ship.x - 10 & ship.x + 10
+            while (ship.y - radiusFromShip < y && y < ship.y + radiusFromShip) {                   //between ship.x - 10 & ship.x + 10
+                y = Math.floor(Math.random() * myCanvas.width);
+            }
+            enemies[length + i].setPosition(x, y);
+            stage.addChild(enemies[length + i]);
+        }
+        window.enemies = enemies;
+    };
+
+    this.createMutatorEnemies = function(amount, radiusFromShip) {
+        var length = enemies.length;
+        for (var i = 0; i < amount; i ++) {
+            enemies.push(new window.Mutator("Mutator" + (i + 1) ,stage));
+            var x = Math.floor(Math.random() * myCanvas.width);
+            while (ship.x - radiusFromShip < x && x < ship.x + radiusFromShip) {                   //between ship.x - 10 & ship.x + 10
+                x = Math.floor(Math.random() * myCanvas.width);
+            }
+
+            var y = Math.floor(Math.random() * myCanvas.height);
+            while (ship.y - radiusFromShip < y && y < ship.y + radiusFromShip) {                   //between ship.x - 10 & ship.x + 10
                 y = Math.floor(Math.random() * myCanvas.width);
             }
             enemies[length + i].setPosition(x, y);
