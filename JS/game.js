@@ -37,7 +37,6 @@
 //        }
 //    }
 
-
 ////////////////////////////////////////////////
     var preloader;
     var manifest;
@@ -204,7 +203,7 @@
 
     this.newGame = function () {
         if (ship === undefined) {
-            ship = new window.Ship("Assets/ship2.png", 100, 25, 5, "normal", 7, 10, 10, stage);
+            ship = new window.Ship("Assets/ship2.png", 100, 25, 5, "normal", 7, 5, 10, stage);
 
             window.createjs.Ticker.addListener(this);
             document.onkeydown = function(e) {
@@ -290,15 +289,14 @@
         }
         window.ship = ship;
 
-
         ship.setPosition(myCanvas.width/2, myCanvas.height/2);
-        //this.createStarEnemies(5, 50);
+        this.createStarEnemies(5, 50);
         this.createXWingEnemies(5, 50);
-        //this.createMutatorEnemies(5, 50);
+        this.createMutatorEnemies(5, 50);
+        this.createSquareEnemies(5, 50);
+        this.createTriangleEnemies(5, 50);
         stage.addChild(ship);
         stage.update();
-
-
     };
 
     this.gameOver = function() {
@@ -306,6 +304,44 @@
         stage.update();
         enemies = [];
         showTitleScreen();
+    };
+
+    this.createTriangleEnemies = function(amount, radiusFromShip) {
+        var length = enemies.length;
+        for (var i = 0; i < amount; i ++) {
+            enemies.push(new window.Triangle("Triangle" + (i + 1) ,stage));
+            var x = Math.floor(Math.random() * myCanvas.width);
+            while (ship.x - radiusFromShip < x && x < ship.x + radiusFromShip) {                   //between ship.x - 10 & ship.x + 10
+                x = Math.floor(Math.random() * myCanvas.width);
+            }
+
+            var y = Math.floor(Math.random() * myCanvas.height);
+            while (ship.y - radiusFromShip < y && y < ship.y + radiusFromShip) {                   //between ship.x - 10 & ship.x + 10
+                y = Math.floor(Math.random() * myCanvas.width);
+            }
+            enemies[length + i].setPosition(x, y);
+            stage.addChild(enemies[length + i]);
+        }
+        window.enemies = enemies;
+    };
+
+    this.createSquareEnemies = function(amount, radiusFromShip) {
+        var length = enemies.length;
+        for (var i = 0; i < amount; i ++) {
+            enemies.push(new window.Square("Square" + (i + 1) ,stage));
+            var x = Math.floor(Math.random() * myCanvas.width);
+            while (ship.x - radiusFromShip < x && x < ship.x + radiusFromShip) {                   //between ship.x - 10 & ship.x + 10
+                x = Math.floor(Math.random() * myCanvas.width);
+            }
+
+            var y = Math.floor(Math.random() * myCanvas.height);
+            while (ship.y - radiusFromShip < y && y < ship.y + radiusFromShip) {                   //between ship.x - 10 & ship.x + 10
+                y = Math.floor(Math.random() * myCanvas.width);
+            }
+            enemies[length + i].setPosition(x, y);
+            stage.addChild(enemies[length + i]);
+        }
+        window.enemies = enemies;
     };
 
     this.createStarEnemies = function(amount, radiusFromShip) {
@@ -376,17 +412,31 @@
         if (ship !== undefined) {
             if (ship._alive) {
                 //////////
+                var rightXDelta = gamepad.gamepads[0].state.RIGHT_STICK_X;
                 var rightYDelta = gamepad.gamepads[0].state.RIGHT_STICK_Y;
                 var rightArcTangentRadians = Math.atan2(rightXDelta, rightYDelta);
+
                 var rightArcTangentDegrees = Math.floor(180 / Math.PI * rightArcTangentRadians);
+                var rightAiming = (rightArcTangentDegrees * -1) + 180;
 
+                if (gamepad.gamepads[0].state.RIGHT_STICK_X > AXIS_THRESHOLD ||
                     gamepad.gamepads[0].state.RIGHT_STICK_X < -AXIS_THRESHOLD ||
+                    gamepad.gamepads[0].state.RIGHT_STICK_Y > AXIS_THRESHOLD ||
                     gamepad.gamepads[0].state.RIGHT_STICK_Y < -AXIS_THRESHOLD) {
+                    ship.fire(rightAiming);
                 }
-                var leftYDelta = gamepad.gamepads[0].state.LEFT_STICK_Y;
 
+                var leftXDelta = gamepad.gamepads[0].state.LEFT_STICK_X;
+                var leftYDelta = gamepad.gamepads[0].state.LEFT_STICK_Y;
+                var leftArcTangentRadians = Math.atan2(leftXDelta, leftYDelta);
+
+                var leftArcTangentDegrees = Math.floor(180 / Math.PI * leftArcTangentRadians);
                 var leftAiming = (leftArcTangentDegrees * -1 ) + 180;
+
+                if (previousLeftAnalogDegrees !== leftAiming)
+                {
                     ship.setRotation(leftAiming);
+                    previousLeftAnalogDegrees = leftAiming;
                 }
 
                 if (gamepad.gamepads[0].state.LEFT_STICK_X > AXIS_THRESHOLD ||
@@ -399,7 +449,7 @@
                 ship.checkMovement();
                 ship.checkBounds();
                 if (window.enemies.length === 0) {
-                    window.createStarEnemies(5);
+                    window.createStarEnemies(5, 50);
                 }
             }
             else {
