@@ -38,6 +38,19 @@
 //    }
 
 
+////////////////////////////////////////////////
+    var preloader;
+    var manifest;
+    var ship2;
+    var title;
+    var playGameb;
+    var controlb;
+    var optionb;
+    var controls;
+    var returnb;
+    var star1;
+    var mutator1;
+////////////////////////////////////////////////
     this.init = function() {
         // Create the canvas-element
         myCanvas = document.createElement('canvas');
@@ -49,6 +62,42 @@
 
         stage = new window.createjs.Stage(myCanvas);
         window.stage = stage;
+
+/////////////////////////////////////////////////
+        manifest = [
+            {src:"Assets/ship2.png", id:"ship2"},
+            {src:"Assets/title.png", id:"title"},
+            {src:"Assets/playGame.png", id:"playGameb"},
+            {src:"Assets/controls.png", id:"controlb"},
+            {src:"Assets/options.png", id:"optionb"},
+            {src:"Assets/controlMenu.png", id:"controls"},
+            {src:"Assets/return.png", id:"returnb"},
+            {src:"Assets/Enemies/Stars/1.png", id:"star1"},
+            {src:"Assets/Enemies/XWings/1.png", id:"xWing1"},
+            {src:"Assets/Enemies/Mutators/1.png", id:"mutator1"}];
+        var queue = new window.createjs.LoadQueue();
+        window.queue = queue;
+
+        queue.installPlugin(window.createjs.Sound);
+        queue.addEventListener("fileload", handleFileLoad);
+        queue.addEventListener("complete", handleComplete);
+        queue.loadManifest(manifest);
+        queue.load();
+
+        function handleFileLoad(event) {
+            var item = event.item; // A reference to the item that was passed in
+            var type = item.type;
+
+            // Add any images to the page body.
+            if (type === window.createjs.LoadQueue.IMAGE) {
+                //document.body.appendChild(event.result);
+            }
+        }
+
+        function handleComplete(event) {
+
+        }
+////////////////////////////////////////////////
 //        stage.enableMouseOver();
         stage.mouseEventsEnabled = true;
         window.createjs.Ticker.setFPS(30);
