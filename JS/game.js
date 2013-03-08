@@ -154,7 +154,7 @@
 
     this.newGame = function () {
         if (ship === undefined) {
-            ship = new window.Ship("Assets/ship2.png", 100, 25, 5, "normal", 7, 2, 10, stage);
+            ship = new window.Ship("Assets/ship2.png", 100, 25, 5, "normal", 7, 10, 10, stage);
 
             window.createjs.Ticker.addListener(this);
             document.onkeydown = function(e) {
@@ -242,8 +242,6 @@
 
 
         ship.setPosition(myCanvas.width/2, myCanvas.height/2);
-        this.createStarEnemies(5);
-        this.createXWingEnemies(5);
         //this.createStarEnemies(5, 50);
         this.createXWingEnemies(5, 50);
         //this.createMutatorEnemies(5, 50);
@@ -260,10 +258,8 @@
         showTitleScreen();
     };
 
-    this.createStarEnemies = function(amount) {
     this.createStarEnemies = function(amount, radiusFromShip) {
         var length = enemies.length;
-        for (var i = 0; i <= amount; i ++) {
         for (var i = 0; i < amount; i ++) {
             enemies.push(new window.Star("Star" + (i + 1) ,stage));
             var x = Math.floor(Math.random() * myCanvas.width);
@@ -327,9 +323,6 @@
 
     this.tick = function(){
         stage.tick();
-        if (stage.tick % 1000 === 0) {
-            console.log("1 second");
-        }
         if (ship !== undefined) {
             if (ship._alive) {
                 ship.checkMovement();
