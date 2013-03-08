@@ -39,6 +39,9 @@
         this.bullets = [];
         this.x = this.width;
         this.y = this.height;
+        this.timeLastBulletShot = new Date();
+        this.timeLastBulletShot = this.timeLastBulletShot.getTime();
+
 
         window.console.log("Ship initialized : health: " + this._health + " speed: " + this._speed + " mass: " + this._mass + " bullet type: " + this._bulletType + " bullet speed: " + this._bulletSpeed + " rate of fire: " + this._rateOfFire + " rotation speed: " + this._rotationSpeed);
 
@@ -182,15 +185,16 @@
 
         Ship.prototype.fire = function(degree) {
 //            var bullets = [];
-            this.bullets.push(new window.Bullet(this._bulletType, this._bulletSpeed, this.x, this.y, degree));
-            for (var i = 0; i < this.bullets.length; i++) {
+            var d = new Date();
+            var timeFired = d.getTime();
+            if (timeFired > this.timeLastBulletShot + (1000 / this._rateOfFire)){
+                this.bullets.push(new window.Bullet(this._bulletType, this._bulletSpeed, this.x, this.y, degree));
+                for (var i = 0; i < this.bullets.length; i++) {
                     this.stage.addChild(this.bullets[i]);
+                }
+                this.timeLastBulletShot = timeFired;
             }
-            window.console.log(this.bullets.length);
-            /*
-            TODO
-            When bullets leave the stage, pop them out of the array so that the GC deletes them
-             */
+
         };
 
         Ship.prototype.isHit = function() {
