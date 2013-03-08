@@ -34,6 +34,7 @@
         this.accX = 0;
         this.accY = 0;
         this._alive = true;
+        this.rotation = 0;
 
         XWing.prototype.setPosition = function(x,y) {
             this.x = x;
@@ -60,6 +61,19 @@
             }
         };
 
+        XWing.prototype.facePlayer = function() {
+            var x1 = window.ship.x;
+            var y1 = window.ship.y;
+            var x2 = this.x;
+            var y2 = this.y;
+
+            var deltaY = y2 - y1;
+            var deltaX = x2 - x1;
+            var angleInDegrees = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+            this.rotation = angleInDegrees;
+//            this.setRotation(angleInDegrees);
+        };
+
         XWing.prototype.moveForward = function() {
             var radians = this.rotation * (Math.PI / 180.0);
             this.accX = Math.cos(radians) * this._speed;
@@ -73,7 +87,7 @@
             // and has positive y going downwards.
             this.y -= (this.accX) / 2;
         };
-        this.rotation = (Math.floor(Math.random() * 360));
+//        this.rotation = (Math.floor(Math.random() * 360));
 
         XWing.prototype.die = function() {
             stage.removeChild(this);
@@ -112,7 +126,7 @@
     XWing.prototype._tick = function () {
         //call to _tick method from parent class
         this.Bitmap_tick();
-        //this.setRotation(Math.floor(Math.random() * 360));
+        this.facePlayer();
         this.inBounds();
         this.moveForward();
     };
