@@ -83,10 +83,22 @@
         this.rotation = (Math.floor(Math.random() * 360));
 
         Mutator.prototype.die = function() {
+            this.createSquareEnemies(2);
             stage.removeChild(this);
             var i = window.enemies.indexOf(this);
             window.enemies.splice(i,1);
             stage.update();
+        };
+
+        Mutator.prototype.createSquareEnemies = function(amount) {
+            var length = window.enemies.length;
+            for (var i = 0; i < amount; i ++) {
+                window.enemies.push(new window.Square("Square" + (i + 1) ,stage));
+                var x = this.x - this.radius + Math.floor(Math.random()*this.radius*2);
+                var y = this.y - this.radius + Math.floor(Math.random()*this.radius*2);
+                window.enemies[length + i].setPosition(x, y);
+                stage.addChild(window.enemies[length + i]);
+            }
         };
 
         Mutator.prototype.inBounds = function() {
