@@ -231,21 +231,8 @@
                 });
 
                 gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
-                    if (e.mapping === 5) {
-//                        ship.fire(ship.rotation);
-                        var rightXDelta = gamepad.gamepads[0].state.RIGHT_STICK_X;
-                        var rightYDelta = gamepad.gamepads[0].state.RIGHT_STICK_Y;
-                        var rightArcTangentRadians = Math.atan2(rightXDelta, rightYDelta);
-
-                        var rightArcTangentDegrees = Math.floor(180 / Math.PI * rightArcTangentRadians);
-                        var rightAiming = (rightArcTangentDegrees * -1) + 180;
-
-                        if (gamepad.gamepads[0].state.RIGHT_STICK_X > AXIS_THRESHOLD ||
-                            gamepad.gamepads[0].state.RIGHT_STICK_X < -AXIS_THRESHOLD ||
-                            gamepad.gamepads[0].state.RIGHT_STICK_Y > AXIS_THRESHOLD ||
-                            gamepad.gamepads[0].state.RIGHT_STICK_Y < -AXIS_THRESHOLD) {
-                        }
-                        ship.fire(rightAiming);
+                    if (e.mapping === 7) {
+                        ship.dropBomb();
                     }
                 });
 
