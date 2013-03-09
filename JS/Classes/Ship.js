@@ -73,10 +73,23 @@
                 // down
                 case 40:	ship._moveDown = false;	break;
                 // Space
-                case 32:
-                    ship.fire(ship.rotation);
-                    break;
+                case 32:    ship.fire(ship.rotation);   break;
+                // B
+                case 66:    ship.dropBomb(); break;
             }
+        };
+
+        Ship.prototype.dropBomb = function() {
+            var length = window.enemies.length;
+            for (var i = 0; i < length; i ++) {
+                window.stage.removeChild(window.enemies[i]);
+            }
+
+            window.enemies.splice(0,length);
+//            var length = window.enemies.length;
+//            for (var i = 0; i < length; i ++) {
+//                window.enemies[i].die();
+//            }
         };
 
         Ship.prototype.checkMovement = function() {
