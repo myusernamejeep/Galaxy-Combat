@@ -400,39 +400,39 @@
         if (ship !== undefined) {
             if (ship._alive) {
                 //////////
-                var rightXDelta = gamepad.gamepads[0].state.RIGHT_STICK_X;
-                var rightYDelta = gamepad.gamepads[0].state.RIGHT_STICK_Y;
-                var rightArcTangentRadians = Math.atan2(rightXDelta, rightYDelta);
+                    var rightXDelta = gamepad.gamepads[0].state.RIGHT_STICK_X;
+                    var rightYDelta = gamepad.gamepads[0].state.RIGHT_STICK_Y;
+                    var rightArcTangentRadians = Math.atan2(rightXDelta, rightYDelta);
 
-                var rightArcTangentDegrees = Math.floor(180 / Math.PI * rightArcTangentRadians);
-                var rightAiming = (rightArcTangentDegrees * -1) + 180;
+                    var rightArcTangentDegrees = Math.floor(180 / Math.PI * rightArcTangentRadians);
+                    var rightAiming = (rightArcTangentDegrees * -1) + 180;
 
-                if (gamepad.gamepads[0].state.RIGHT_STICK_X > AXIS_THRESHOLD ||
-                    gamepad.gamepads[0].state.RIGHT_STICK_X < -AXIS_THRESHOLD ||
-                    gamepad.gamepads[0].state.RIGHT_STICK_Y > AXIS_THRESHOLD ||
-                    gamepad.gamepads[0].state.RIGHT_STICK_Y < -AXIS_THRESHOLD) {
-                    ship.fire(rightAiming);
-                }
+                    if (gamepad.gamepads[0].state.RIGHT_STICK_X > AXIS_THRESHOLD ||
+                        gamepad.gamepads[0].state.RIGHT_STICK_X < -AXIS_THRESHOLD ||
+                        gamepad.gamepads[0].state.RIGHT_STICK_Y > AXIS_THRESHOLD ||
+                        gamepad.gamepads[0].state.RIGHT_STICK_Y < -AXIS_THRESHOLD) {
+                        ship.fire(rightAiming);
+                    }
 
-                var leftXDelta = gamepad.gamepads[0].state.LEFT_STICK_X;
-                var leftYDelta = gamepad.gamepads[0].state.LEFT_STICK_Y;
-                var leftArcTangentRadians = Math.atan2(leftXDelta, leftYDelta);
+                    var leftXDelta = gamepad.gamepads[0].state.LEFT_STICK_X;
+                    var leftYDelta = gamepad.gamepads[0].state.LEFT_STICK_Y;
+                    var leftArcTangentRadians = Math.atan2(leftXDelta, leftYDelta);
 
-                var leftArcTangentDegrees = Math.floor(180 / Math.PI * leftArcTangentRadians);
-                var leftAiming = (leftArcTangentDegrees * -1 ) + 180;
+                    var leftArcTangentDegrees = Math.floor(180 / Math.PI * leftArcTangentRadians);
+                    var leftAiming = (leftArcTangentDegrees * -1 ) + 180;
 
-                if (previousLeftAnalogDegrees !== leftAiming)
-                {
-                    ship.setRotation(leftAiming);
-                    previousLeftAnalogDegrees = leftAiming;
-                }
+                    if (previousLeftAnalogDegrees !== leftAiming)
+                    {
+                        ship.setRotation(leftAiming);
+                        previousLeftAnalogDegrees = leftAiming;
+                    }
 
-                if (gamepad.gamepads[0].state.LEFT_STICK_X > AXIS_THRESHOLD ||
-                    gamepad.gamepads[0].state.LEFT_STICK_X < -AXIS_THRESHOLD ||
-                    gamepad.gamepads[0].state.LEFT_STICK_Y > AXIS_THRESHOLD ||
-                    gamepad.gamepads[0].state.LEFT_STICK_Y < -AXIS_THRESHOLD) {
-                    ship.moveForward();
-                }
+                    if (gamepad.gamepads[0].state.LEFT_STICK_X > AXIS_THRESHOLD ||
+                        gamepad.gamepads[0].state.LEFT_STICK_X < -AXIS_THRESHOLD ||
+                        gamepad.gamepads[0].state.LEFT_STICK_Y > AXIS_THRESHOLD ||
+                        gamepad.gamepads[0].state.LEFT_STICK_Y < -AXIS_THRESHOLD) {
+                        ship.moveForward();
+                    }
                 //////////
                 ship.checkMovement();
                 ship.checkBounds();
