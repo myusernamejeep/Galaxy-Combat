@@ -287,6 +287,7 @@
                 });
             }
         }
+        ship._alive = true;
         window.ship = ship;
 
         ship.setPosition(myCanvas.width/2, myCanvas.height/2);
@@ -453,7 +454,6 @@
                 }
             }
             else {
-                ship._alive = true;
                 gameOver();
             }
         }
