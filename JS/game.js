@@ -203,7 +203,8 @@
 
     this.newGame = function () {
         if (ship === undefined) {
-            ship = new window.Ship("Assets/ship2.png", 100, 25, 5, "normal", 7, 5, 10, stage);
+                                    //image, health, speed, mass, bulletType, bulletSpeed, rateOfFire, rotationSpeed, stage
+            ship = new window.Ship("Assets/ship2.png", 100, 25, 5, "normal", 7, 10, 10, stage);
 
             window.createjs.Ticker.addListener(this);
             document.onkeydown = function(e) {
