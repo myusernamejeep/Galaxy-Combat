@@ -282,7 +282,7 @@
         this.createXWingEnemies(5, 50);
         this.createMutatorEnemies(5, 50);
         this.createSquareEnemies(5, 50);
-        this.createTriangleEnemies(5, 50);
+        this.createTriangleEnemies(5, 100);
         stage.addChild(ship);
         stage.update();
     };
