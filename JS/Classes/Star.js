@@ -80,20 +80,28 @@
                 this.rotation -= 90;
 //                this.accX *= -1;
 //                this.accY *= -1;
+                this._speed += 2;
             } else if (this.y > this.stage.canvas.height) {
                 this.rotation -= 90;
 //                this.accX *= -1;
 //                this.accY *= -1;
+                this._speed += 2;
             }
 
             if (this.x < 0) {
                 this.rotation -= 90;
 //                this.accX *= -1;
 //                this.accY *= -1;
+                this._speed += 2;
             } else if (this.x > this.stage.canvas.width) {
                 this.rotation -= 90;
 //                this.accX *= -1;
 //                this.accY *= -1;
+                this._speed += 2;
+            }
+
+            if ( this._speed > 30) {
+                this._speed = 30;
             }
             // making the rotation always stay within 0 - 360
             if (this.rotation >= 360) { this.rotation -= 360;}
