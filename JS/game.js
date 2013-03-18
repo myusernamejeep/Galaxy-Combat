@@ -135,8 +135,6 @@
         TitleView.addChild(title);
         addMenu();
         stage.addChild(TitleView);
-        stage.update();
-
     };
 
     this.addMenu = function() {
@@ -173,12 +171,10 @@
 
     this.removeMenu = function() {
         TitleView.removeChildAt(1,2,3);
-        stage.update();
     };
 
     this.removeTitleScreen = function() {
         TitleView.removeChildAt(0);
-        stage.update();
     };
 
     this.showControls = function() {
@@ -206,7 +202,6 @@
 
     this.removeControls = function() {
         TitleView.removeChildAt(1,2);
-        stage.update();
     };
 
     this.showOptions = function() {
@@ -296,12 +291,10 @@
         this.createSquareEnemies(5, 50);
         this.createTriangleEnemies(5, 100);
         stage.addChild(ship);
-        stage.update();
     };
 
     this.gameOver = function() {
         stage.removeAllChildren();
-        stage.update();
         enemies = [];
         showTitleScreen();
     };

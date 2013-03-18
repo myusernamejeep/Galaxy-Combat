@@ -86,7 +86,6 @@
             stage.removeChild(this);
             var i = window.enemies.indexOf(this);
             window.enemies.splice(i,1);
-            stage.update();
         };
 
         XWing.prototype.inBounds = function() {
