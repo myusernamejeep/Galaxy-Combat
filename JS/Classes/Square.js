@@ -20,8 +20,8 @@
         this.regX = this.height/2;
         this.regY = this.width/2;
         this.stage = stage;
-        this._speed = 20;
         this.radius = this.regX;
+        this._speed = 13;
         this._rotationSpeed = 7;
         this.accX = 0;
         this.accY = 0;
