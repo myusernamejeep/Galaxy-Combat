@@ -474,7 +474,7 @@
 
     this.updateLevel = function() {
         var levelDiv = document.getElementById("levels");
-        levelDiv.innerText = "Level: " + level;
+        levelDiv.innerText = "Level: " + level + " ";
     };
 
     this.updateBombs = function() {
@@ -591,20 +591,7 @@
 
             level++;
             this.updateLevel();
-             this.createLevel(level);
-
-//            var random = window.randomWhole(100);
-
-//            if (random === 1) {
-//                this.createXWingEnemies(500,50);
-//            } else {
-//                this.createStarEnemies(5, 50);
-//                this.createXWingEnemies(5, 50);
-//                this.createMutatorEnemies(5, 50);
-//                this.createSquareEnemies(5, 150);
-//                this.createTriangleEnemies(5, 100);
-//            }
-
+            this.createLevel(level);
         }
 
     };
