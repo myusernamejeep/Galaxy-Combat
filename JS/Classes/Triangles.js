@@ -54,19 +54,6 @@
             }
         };
 
-        Triangle.prototype.facePlayer = function() {
-            var x1 = window.ship.x;
-            var y1 = window.ship.y;
-            var x2 = this.x;
-            var y2 = this.y;
-
-            var deltaY = y2 - y1;
-            var deltaX = x2 - x1;
-            var angleInDegrees = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
-            this.rotation = angleInDegrees;
-//            this.setRotation(angleInDegrees);
-        };
-
         Triangle.prototype.moveForward = function(){
 //            this._speed+=0.002;
             var p = window.ship,
