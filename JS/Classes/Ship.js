@@ -1,7 +1,7 @@
 (function (window) {
     // The class receives parameteres that are passed to the initialize method (constructor)
-    function Ship(image, health, speed, mass, bulletType, bulletSpeed, rateOfFire, rotationSpeed, stage) {
-        this.initialize(image, health, speed, mass, bulletType, bulletSpeed, rateOfFire, rotationSpeed, stage);
+    function Ship(image, speed, bulletType, bulletSpeed, rateOfFire, rotationSpeed) {
+        this.initialize(image, speed, bulletType, bulletSpeed, rateOfFire, rotationSpeed);
     }
 
     //Inheritance from Bitmap
@@ -10,7 +10,7 @@
     Ship.prototype.Bitmap_tick = Ship.prototype._tick;
 
     // The initalize method register the class variables with the passed params
-    Ship.prototype.initialize = function (image, health, speed, mass, bulletType, bulletSpeed, rateOfFire, rotationSpeed, stage) {
+    Ship.prototype.initialize = function (image, speed, bulletType, bulletSpeed, rateOfFire, rotationSpeed) {
         //call to initialize() method from parent class
         this.Bitmap_initialize(image);
         this.name = "Player";
@@ -19,12 +19,8 @@
         this.height = this.image.height;
         this.regX = this.height/2;
         this.regY = this.width/2;
-        this.stage = stage;
         this.radius = Math.sqrt((this.height / 2)*(this.height / 2) + (this.width / 2) * (this.width / 2));
-
-        this._health = health;
         this._speed = speed;
-        this._mass = mass;
         this._bulletType = bulletType;
         this._bulletSpeed = speed + bulletSpeed;
         this._rateOfFire = rateOfFire;
