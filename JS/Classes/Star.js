@@ -58,12 +58,7 @@
             this.accX = Math.cos(radians) * this._speed;
             this.accY = Math.sin(radians) * this._speed;
 
-            // Update the horizontal position (x)
             this.x += (this.accY) / 2;
-
-            // Update the vertical position (y)
-            // Subtracted because coordinate system starts in upper right
-            // and has positive y going downwards.
             this.y -= (this.accX) / 2;
         };
         this.rotation = (Math.floor(Math.random() * 360));

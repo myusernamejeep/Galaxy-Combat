@@ -92,7 +92,6 @@
                 this.rotation-=0.16;
             }
             this.rotation=fixAngle(this.rotation);
-            return true;
         };
 
         Triangle.prototype.die = function() {

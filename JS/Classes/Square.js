@@ -20,8 +20,6 @@
         this.regX = this.height/2;
         this.regY = this.width/2;
         this.stage = stage;
-
-        this._health = 100;
         this._speed = 20;
         this.radius = this.regX;
         this._rotationSpeed = 7;
@@ -82,7 +80,6 @@
                 this.rotation -= 90;
 //                this.accX *= -1;
 //                this.accY *= -1;
-            } else if (this.y > this.stage.canvas.height) {
             } else if (this.y > this.stage.canvas.height - this.radius) {
                 this.y = stage.canvas.height - this.radius;
                 this.rotation -= 90;

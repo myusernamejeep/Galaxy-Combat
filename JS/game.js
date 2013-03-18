@@ -92,17 +92,13 @@
     var score = 0;
     var gamepadSupportAvailable = window.Modernizr.gamepads;
     if (gamepadSupportAvailable) {
-        window.console.log("Your browser supports a gamepad, why not connect one up?");
-        // inform user they can connect a gamepad up and use it to play
         var gamepad = new window.Gamepad();
+        window.gamepad = gamepad;
         var previousLeftAnalogDegrees = null;
         var AXIS_THRESHOLD = 0.75;
         if (gamepad.init()) {
-            gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
+            gamepad.bind(window.Gamepad.Event.BUTTON_UP, function(e) {
                 if (e.mapping === 16) {
-                    removeMenu();
-                    removeTitleScreen();
-                    newGame();
                 }
             });
 
@@ -127,7 +123,7 @@
     };
 
     this.showTitleScreen = function() {
-        TitleView = new createjs.Container();
+        TitleView = new window.createjs.Container();
 
         var title = new window.createjs.Bitmap(titleImage);
         title.x = (myCanvas.width / 2) - (title.image.width / 2);
@@ -135,7 +131,7 @@
         title.name = 'title';
 
         TitleView.addChild(title);
-        addMenu();
+        window.addMenu();
         stage.addChild(TitleView);
     };
 
@@ -146,9 +142,9 @@
         playGame.name = "playGame";
 
         playGame.onClick = function() {
-            removeMenu();
-            removeTitleScreen();
-            newGame();
+            window.removeMenu();
+            window.removeTitleScreen();
+            window.newGame();
         };
         TitleView.addChild(playGame);
 
@@ -158,17 +154,11 @@
         controls.name = "controls";
 
         controls.onClick = function() {
-//            removeTitleScreen();
-            removeMenu();
-            showControls();
+            window.removeMenu();
+            window.showControls();
         };
         TitleView.addChild(controls);
 
-        options.onClick = function() {
-//            removeTitleScreen();
-            removeMenu();
-            showOptions();
-        };
     };
 
     this.removeMenu = function() {
@@ -180,7 +170,6 @@
     };
 
     this.showControls = function() {
-        window.console.log("Showed controls");
         var controls = new window.createjs.Bitmap(controlsMenuImage);
         controls.x = (myCanvas.width / 2) - (controls.image.width / 2);
         controls.y = 320;
@@ -194,8 +183,8 @@
         returnb.name = "returnb";
 
         returnb.onClick = function() {
-            removeControls();
-            addMenu();
+            window.removeControls();
+            window.addMenu();
         };
 
         TitleView.addChild(returnb);
@@ -214,7 +203,6 @@
         if (ship === undefined) {
             ship = new window.Ship(shipImage, 25, "normal", 7, 10, 10);
 
-            window.createjs.Ticker.addListener(this);
             document.onkeydown = function(e) {
                 ship.onKeyDown(ship, e);
             };
@@ -223,11 +211,11 @@
             };
 
             if (gamepad.init()) {
-                gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
+                gamepad.bind(window.Gamepad.Event.CONNECTED, function(device) {
                     window.console.log("connected a gamepad!", device);
                 });
 
-                gamepad.bind(Gamepad.Event.DISCONNECTED, function(device) {
+                gamepad.bind(window.Gamepad.Event.DISCONNECTED, function(device) {
                     // pseudocode
 //                if (game playing) {
 //                    pause game;
@@ -235,51 +223,14 @@
 //                alert user that gamepad disconnected
                 });
 
-                gamepad.bind(Gamepad.Event.UNSUPPORTED, function(device) {
+                gamepad.bind(window.Gamepad.Event.UNSUPPORTED, function(device) {
                     // inform user that we don't have a mapping for their controller so it might not work as expected
                 });
 
-                gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
-                    if (e.mapping === 7) {
+                gamepad.bind(window.Gamepad.Event.BUTTON_UP, function(e) {
+                    if (e.mapping === 5) {
                         ship.dropBomb();
                     }
-                });
-
-                gamepad.bind(Gamepad.Event.TICK, function(gamepads) {
-
-//                    var rightXDelta = gamepad.gamepads[0].state.RIGHT_STICK_X;
-//                    var rightYDelta = gamepad.gamepads[0].state.RIGHT_STICK_Y;
-//                    var rightArcTangentRadians = Math.atan2(rightXDelta, rightYDelta);
-//
-//                    var rightArcTangentDegrees = Math.floor(180 / Math.PI * rightArcTangentRadians);
-//                    var rightAiming = (rightArcTangentDegrees * -1) + 180;
-//
-//                    if (gamepad.gamepads[0].state.RIGHT_STICK_X > AXIS_THRESHOLD ||
-//                        gamepad.gamepads[0].state.RIGHT_STICK_X < -AXIS_THRESHOLD ||
-//                        gamepad.gamepads[0].state.RIGHT_STICK_Y > AXIS_THRESHOLD ||
-//                        gamepad.gamepads[0].state.RIGHT_STICK_Y < -AXIS_THRESHOLD) {
-//                        ship.fire(rightAiming);
-//                    }
-//
-//                    var leftXDelta = gamepad.gamepads[0].state.LEFT_STICK_X;
-//                    var leftYDelta = gamepad.gamepads[0].state.LEFT_STICK_Y;
-//                    var leftArcTangentRadians = Math.atan2(leftXDelta, leftYDelta);
-//
-//                    var leftArcTangentDegrees = Math.floor(180 / Math.PI * leftArcTangentRadians);
-//                    var leftAiming = (leftArcTangentDegrees * -1 ) + 180;
-//
-//                    if (previousLeftAnalogDegrees !== leftAiming)
-//                    {
-//                        ship.setRotation(leftAiming);
-//                        previousLeftAnalogDegrees = leftAiming;
-//                    }
-//
-//                    if (gamepad.gamepads[0].state.LEFT_STICK_X > AXIS_THRESHOLD ||
-//                        gamepad.gamepads[0].state.LEFT_STICK_X < -AXIS_THRESHOLD ||
-//                        gamepad.gamepads[0].state.LEFT_STICK_Y > AXIS_THRESHOLD ||
-//                        gamepad.gamepads[0].state.LEFT_STICK_Y < -AXIS_THRESHOLD) {
-//                        ship.moveForward();
-//                    }
                 });
             }
         }
@@ -288,19 +239,14 @@
         window.ship = ship;
 
         ship.setPosition(myCanvas.width/2, myCanvas.height/2);
-        this.createStarEnemies(5, 50);
-        this.createXWingEnemies(5, 50);
-        this.createMutatorEnemies(5, 50);
-        this.createSquareEnemies(5, 50);
-        this.createTriangleEnemies(5, 100);
         stage.addChild(ship);
+        //1111111111stage.update();
     };
 
     this.gameOver = function() {
         stage.removeAllChildren();
-        enemies = [];
-        showTitleScreen();
         level = 0;
+        window.showTitleScreen();
     };
 
     this.createTriangleEnemies = function(amount, radiusFromShip) {
