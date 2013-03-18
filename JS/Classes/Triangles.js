@@ -100,6 +100,7 @@
             var i = window.enemies.indexOf(this);
             window.enemies.splice(i,1);
             stage.update();
+            window.console.log(this.name + "Died");
         };
 
         Triangle.prototype.inBounds = function() {

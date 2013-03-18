@@ -85,6 +85,7 @@
             var i = window.enemies.indexOf(this);
             window.enemies.splice(i,1);
             stage.update();
+            window.console.log(this.name + "Died");
         };
 
         Mutator.prototype.createSquareEnemies = function(amount) {
