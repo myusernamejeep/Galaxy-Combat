@@ -40,11 +40,16 @@
     var starImage;
     var bulletImage;
     var xWingImage;
+    var gamepadImage;
 
     this.loadAssets = function() {
         //preload all images
         var imagesLoaded = 0;
-        var totalImages = 12;
+        var totalImages = 13;
+
+        gamepadImage = new Image();
+        gamepadImage.onload = onImageLoaded;
+        gamepadImage.src = "Assets/gamepad.png";
 
         shipImage = new Image();
         shipImage.src = "Assets/ship.png";
@@ -126,6 +131,14 @@
         var previousLeftAnalogDegrees = null;
         var AXIS_THRESHOLD = 0.75;
         if (gamepad.init()) {
+            gamepad.bind(window.Gamepad.Event.CONNECTED, function(e) {
+                window.addGamepadMenu();
+            });
+
+            gamepad.bind(window.Gamepad.Event.DISCONNECTED, function(e) {
+                TitleView.removeChild(TitleView.getChildByName("gamepadMenu"));
+            });
+
             gamepad.bind(window.Gamepad.Event.BUTTON_UP, function(e) {
                 if (e.mapping === 16) {
                     if (ship !== undefined) {
@@ -178,6 +191,19 @@
         TitleView.addChild(title);
         window.addMenu();
         stage.addChild(TitleView);
+
+        if (gamepad.gamepads[0]) {
+            window.addGamepadMenu();
+        }
+    };
+
+    this.addGamepadMenu = function() {
+        var gamepadMenu = new window.createjs.Bitmap(gamepadImage);
+        gamepadMenu.x = (myCanvas.width / 2) - (gamepadMenu.image.width / 2);
+        gamepadMenu.y = myCanvas.height - gamepadMenu.image.height;
+        gamepadMenu.name = 'gamepadMenu';
+
+        TitleView.addChild(gamepadMenu);
     };
 
     this.addMenu = function() {
@@ -227,7 +253,8 @@
     };
 
     this.removeTitleScreen = function() {
-        TitleView.removeChildAt(0);
+//        TitleView.removeChildAt(0);
+        TitleView.removeAllChildren();
     };
 
     this.showControls = function() {
@@ -370,6 +397,7 @@
                 x > stage.canvas.width - enemies[length + i]) {
 
             }
+
             if (y === undefined) {
                 var y = Math.floor(Math.random() * (myCanvas.height - enemies[length + i].radius));
                 while (ship.y - radiusFromShip < y && y < ship.y + radiusFromShip) {
