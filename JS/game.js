@@ -52,8 +52,8 @@
         gamepadImage.src = "Assets/gamepad.png";
 
         shipImage = new Image();
-        shipImage.src = "Assets/ship.png";
         shipImage.onload = onImageLoaded;
+        shipImage.src = "Assets/ship.png";
 
         titleImage = new Image();
         titleImage.onload = onImageLoaded;
