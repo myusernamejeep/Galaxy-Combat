@@ -33,6 +33,7 @@
         this.accY = 0;
         this._alive = true;
         this.bullets = [];
+        this.bombs = 5;
         this.x = this.width;
         this.y = this.height;
         this.timeLastBulletShot = new Date();
@@ -76,9 +77,15 @@
         };
 
         Ship.prototype.dropBomb = function() {
-            var length = window.enemies.length;
-            for (var i = 0; i < length; i ++) {
-                window.stage.removeChild(window.enemies[i]);
+            if (!window.allEnemiesDead()) {
+                if (this.bombs > 0) {
+                    this.bombs --;
+                    var length = window.enemies.length;
+                    for (var i = 0; i < length; i ++) {
+                        window.stage.removeChild(window.enemies[i]);
+                    }
+                    window.enemies.splice(0,length);
+                }
             }
 
             window.enemies.splice(0,length);
