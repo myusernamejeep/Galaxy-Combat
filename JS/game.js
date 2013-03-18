@@ -1,4 +1,32 @@
 (function(window){
+
+    var C=Cookies = {
+        values:{},
+        path:"\/",
+        create:function (name,value,days,path) {
+            var date= new Date();
+            date.setTime(date.getTime()+(days||365)*24*60*60*1000);
+            document.cookie = name+"="+escape (value )+"; expires="+date.toGMTString()+";path="+this.path;
+        },
+        init:function (path) {
+            this.path = path || location.pathname.substr(0,location.pathname.lastIndexOf("\/")+1);
+            var allCookies = document.cookie.split ('; ');
+            for (var i=0;i<allCookies.length;i++) {
+                var cookiesPair = allCookies[i].split('=');
+                this.values[cookiesPair[0]] = unescape(cookiesPair[1]);
+            }
+        },
+        read:function (name) {
+            return this.values[name]||"";
+        },
+        erase:function (name) {
+            this.create(name,"",-1);
+            this.values[name]=null;
+        }
+    }
+    C.init();
+
+
     var titleImage;
     var shipImage;
     var playGameImage;
@@ -90,6 +118,7 @@
     window.enemies = enemies;
     var previousWaveStartTime = window.now();
     var score = 0;
+    var highscore = parseInt(C.read("highscore"))||0;
     var gamepadSupportAvailable = window.Modernizr.gamepads;
     if (gamepadSupportAvailable) {
         var gamepad = new window.Gamepad();
@@ -393,8 +422,24 @@
         window.enemies = enemies;
     };
 
-    this.addPoints = function() {
-        score += 10;
+    this.addPoints = function(amount) {
+        score += amount;
+        var scoreDiv = document.getElementById("score");
+        scoreDiv.innerText = "Score: " + score + " Bombs: " + ship.bombs;
+
+        if(score > highscore) {
+            highscore = score;
+            window.updateHighscore();
+        }
+    };
+
+    this.updateHighscore = function() {
+        document.getElementById("highscore").innerHTML = "Highscore: " + highscore;
+        C.create("highscore", highscore);
+    };
+
+    this.subtractPoints = function(amount) {
+        score -= amount;
         var scoreDiv = document.getElementById("score");
         scoreDiv.innerText = "Score: " + score + " Bombs: " + ship.bombs;
     };
