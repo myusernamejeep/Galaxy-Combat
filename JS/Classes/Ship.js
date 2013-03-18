@@ -166,12 +166,19 @@
             }
             return false;
         };
+
+        Ship.prototype.die = function() {
+            this.bombs = 5;
+            this._alive = false;
+            window.gameOver();
+        };
     };
 
     Ship.prototype._tick = function () {
         //call to _tick method from parent class
         this.Bitmap_tick();
         if (this.isHit()) {
+            this.die();
         }
     };
 
