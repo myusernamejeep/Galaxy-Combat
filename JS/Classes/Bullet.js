@@ -69,7 +69,7 @@
                 if (collision) {
                     window.enemies[i].die();
                     this.die();
-                    window.addPoints();
+                    window.addPoints(11);
 
                     return true;
                 }
@@ -81,7 +81,6 @@
             window.stage.removeChild(this);
             var i = window.ship.bullets.indexOf(this);
             window.ship.bullets.splice(i,1);
-            //window.stage.update();
         };
 
         Bullet.prototype.isOnStage = function() {
@@ -103,6 +102,7 @@
             this.isHit();
         } else {
             this.die();
+            window.subtractPoints(1);
         }
 
         //console.log("Ship Ticked");
