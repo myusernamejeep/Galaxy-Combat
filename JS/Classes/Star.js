@@ -76,44 +76,50 @@
         };
 
         Star.prototype.inBounds = function() {
-            if (this.y < 0) {
+            if (this.y < this.radius) {
+                this.y = this.radius;
                 this.rotation -= 90;
 //                this.accX *= -1;
 //                this.accY *= -1;
-                this._speed += 2;
-            } else if (this.y > this.stage.canvas.height) {
+            } else if (this.y > this.stage.canvas.height - this.radius) {
+                this.y = stage.canvas.height - this.radius;
                 this.rotation -= 90;
 //                this.accX *= -1;
 //                this.accY *= -1;
-                this._speed += 2;
             }
 
-            if (this.x < 0) {
+            if (this.x < this.radius) {
+                this.x = this.radius;
                 this.rotation -= 90;
 //                this.accX *= -1;
 //                this.accY *= -1;
-                this._speed += 2;
-            } else if (this.x > this.stage.canvas.width) {
+            } else if (this.x > this.stage.canvas.width - this.radius) {
+                this.x = stage.canvas.width - this.radius;
                 this.rotation -= 90;
 //                this.accX *= -1;
 //                this.accY *= -1;
-                this._speed += 2;
-            }
-
-            if ( this._speed > 30) {
-                this._speed = 30;
             }
             // making the rotation always stay within 0 - 360
             if (this.rotation >= 360) { this.rotation -= 360;}
             if (this.rotation < 0) { this.rotation += 360;}
         };
 
+        Star.prototype.isOutOfBounds = function() {
+            if (this.x < -20 || this.x > stage.canvas.width + 20 ||
+                this.y < -20 || this.y > stage.canvas.height + 20) {
+                return true;
+            }
+            return false;
+        };
     };
 
     Star.prototype._tick = function () {
         //call to _tick method from parent class
         this.Bitmap_tick();
         //this.setRotation(Math.floor(Math.random() * 360));
+        if (this.isOutOfBounds()) {
+            this.die();
+        }
         this.inBounds();
         this.moveForward();
     };
