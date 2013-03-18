@@ -85,7 +85,9 @@
     var ship;
     var myCanvas;
     var TitleView;
+    var level = 0;
     var enemies = [];
+    window.enemies = enemies;
     var previousWaveStartTime = window.now();
     var score = 0;
     var gamepadSupportAvailable = window.Modernizr.gamepads;
@@ -281,6 +283,7 @@
                 });
             }
         }
+        this.updateBombs();
         ship._alive = true;
         window.ship = ship;
 
@@ -297,6 +300,7 @@
         stage.removeAllChildren();
         enemies = [];
         showTitleScreen();
+        level = 0;
     };
 
     this.createTriangleEnemies = function(amount, radiusFromShip) {
@@ -397,9 +401,21 @@
     this.addPoints = function() {
         score += 10;
         var scoreDiv = document.getElementById("score");
-        scoreDiv.innerText = "Score: " + score;
+        scoreDiv.innerText = "Score: " + score + " Bombs: " + ship.bombs;
+    };
+
+    this.updateLevel = function() {
+        var levelDiv = document.getElementById("levels");
+        levelDiv.innerText = "Level: " + level;
+    };
+
+    this.updateBombs = function() {
+        var scoreDiv = document.getElementById("score");
+        scoreDiv.innerText = "Score: " + score + " Bombs: " + ship.bombs;
+    };
     this.allEnemiesDead = function() {
         if (enemies.length === 0) {
+            this.updateBombs();
             return true;
         } else {
             return false;
