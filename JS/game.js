@@ -86,6 +86,7 @@
     var myCanvas;
     var TitleView;
     var enemies = [];
+    var previousWaveStartTime = window.now();
     var score = 0;
     var gamepadSupportAvailable = window.Modernizr.gamepads;
     if (gamepadSupportAvailable) {
@@ -404,6 +405,124 @@
         score += 10;
         var scoreDiv = document.getElementById("score");
         scoreDiv.innerText = "Score: " + score;
+    this.allEnemiesDead = function() {
+        if (enemies.length === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    this.createLevel = function(level) {
+        switch(level) {
+            case 1:
+                this.createStarEnemies(1,100);
+                break;
+            case 2:
+                this.createXWingEnemies(2,100);
+                break;
+            case 3:
+                this.createSquareEnemies(3,100);
+                break;
+            case 4:
+                this.createMutatorEnemies(4,100);
+                break;
+            case 5:
+                this.createTriangleEnemies(5,100);
+                break;
+            case 6:
+                this.createLevel(1);
+                this.createLevel(1);
+                break;
+            case 7:
+                this.createLevel(1);
+                this.createLevel(2);
+                break;
+            case 8:
+                this.createLevel(1);
+                this.createLevel(3);
+                break;
+            case 9:
+                this.createLevel(1);
+                this.createLevel(4);
+                break;
+            case 10:
+                this.createLevel(1);
+                this.createLevel(5);
+                break;
+            case 11:
+                this.createLevel(2);
+                this.createLevel(2);
+                break;
+            case 12:
+                this.createLevel(2);
+                this.createLevel(3);
+                break;
+            case 13:
+                this.createLevel(2);
+                this.createLevel(4);
+                break;
+            case 14:
+                this.createLevel(2);
+                this.createLevel(5);
+                break;
+            case 15:
+                this.createLevel(3);
+                this.createLevel(3);
+                break;
+            case 16:
+                this.createLevel(3);
+                this.createLevel(4);
+                break;
+            case 17:
+                this.createLevel(3);
+                this.createLevel(5);
+                break;
+            case 18:
+                this.createLevel(4);
+                this.createLevel(4);
+                break;
+            case 19:
+                this.createLevel(4);
+                this.createLevel(5);
+                break;
+            case 20:
+                this.createLevel(5);
+                this.createLevel(5);
+                break;
+            case 21:
+                this.createLevel(2);
+                this.createLevel(5);
+                break;
+            case 22:
+                this.createXWingEnemies(500,50);
+                break;
+        }
+    };
+
+    this.nextWave = function() {
+        var now = window.now();
+        if (now > previousWaveStartTime + 3000) {
+            previousWaveStartTime = now;
+
+            level++;
+            this.updateLevel();
+             this.createLevel(level);
+
+//            var random = window.randomWhole(100);
+
+//            if (random === 1) {
+//                this.createXWingEnemies(500,50);
+//            } else {
+//                this.createStarEnemies(5, 50);
+//                this.createXWingEnemies(5, 50);
+//                this.createMutatorEnemies(5, 50);
+//                this.createSquareEnemies(5, 150);
+//                this.createTriangleEnemies(5, 100);
+//            }
+
+        }
+
     };
 
     this.tick = function(){
@@ -447,8 +566,8 @@
                 //////////
                 ship.checkMovement();
                 ship.checkBounds();
-                if (window.enemies.length === 0) {
-                    window.createStarEnemies(5, 50);
+                if (this.allEnemiesDead()) {
+                    this.nextWave();
                 }
             }
             else {
