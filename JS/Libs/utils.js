@@ -19,3 +19,8 @@ function now(){
     "use strict";
     return (new window.Date()).getTime();
 }
+
+function randomWhole(max) {
+    "use strict";
+    return Math.floor(Math.random() * max);
+}
