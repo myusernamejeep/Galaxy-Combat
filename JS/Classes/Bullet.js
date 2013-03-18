@@ -18,8 +18,7 @@
     // The initalize method register the class variables with the passed params
     Bullet.prototype.initialize = function (type, speed, x, y, degree) {
         //call to initialize() method from parent class
-        var image = "Assets/bullet.png";
-        this.Bitmap_initialize(image);
+        this.Bitmap_initialize(window.bulletImage);
         this.name = "Bullet";
         this.snapToPixel = true;
         this.width = this.image.width;

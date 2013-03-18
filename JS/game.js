@@ -1,4 +1,86 @@
 (function(window){
+    var titleImage;
+    var shipImage;
+    var playGameImage;
+    var controlsImage;
+    var controlsMenuImage;
+    var returnImage;
+
+    var squareImage;
+    var triangleImage;
+    var mutatorImage;
+    var starImage;
+    var bulletImage;
+    var xWingImage;
+
+    this.loadAssets = function() {
+        //preload all images
+        var imagesLoaded = 0;
+        var totalImages = 12;
+
+        shipImage = new Image();
+        shipImage.src = "Assets/ship.png";
+        shipImage.onload = onImageLoaded;
+
+        titleImage = new Image();
+        titleImage.onload = onImageLoaded;
+        titleImage.src = "Assets/title.png";
+
+        playGameImage = new Image();
+        playGameImage.onload = onImageLoaded;
+        playGameImage.src = "Assets/playGame.png";
+
+        controlsImage = new Image();
+        controlsImage.onload = onImageLoaded;
+        controlsImage.src = "Assets/controls.png";
+
+        controlsMenuImage = new Image();
+        controlsMenuImage.onload = onImageLoaded;
+        controlsMenuImage.src = "Assets/controlMenu.png";
+
+        returnImage = new Image();
+        returnImage.onload = onImageLoaded;
+        returnImage.src = "Assets/return.png";
+
+        squareImage = new Image();
+        squareImage.onload = onImageLoaded;
+        squareImage.src = "Assets/Enemies/Squares/1.png";
+
+        triangleImage = new Image();
+        triangleImage.onload = onImageLoaded;
+        triangleImage.src = "Assets/Enemies/Triangles/1.png";
+
+        mutatorImage = new Image();
+        mutatorImage.onload = onImageLoaded();
+        mutatorImage.src = "Assets/Enemies/Mutators/1.png";
+
+        starImage = new Image();
+        starImage.onload = onImageLoaded;
+        starImage.src = "Assets/Enemies/Stars/1.png";
+
+        bulletImage = new Image();
+        bulletImage.onload = onImageLoaded;
+        bulletImage.src = "Assets/bullet.png";
+
+        xWingImage = new Image();
+        xWingImage.onload = onImageLoaded;
+        xWingImage.src = "Assets/Enemies/XWings/1.png";
+
+        function onImageLoaded() {
+            imagesLoaded++;
+
+            if (imagesLoaded === totalImages) {
+                window.squareImage = squareImage;
+                window.triangleImage = triangleImage;
+                window.mutatorImage = mutatorImage;
+                window.starImage = starImage;
+                window.xWingImage = xWingImage;
+                window.bulletImage = bulletImage;
+                window.init();
+            }
+        }
+    };
+
     var stage;
     var ship;
     var myCanvas;
@@ -23,34 +105,7 @@
 
         }
     }
-//    var gamepadSupportAvailable = Modernizr.gamepads;
-//    if (gamepadSupportAvailable) {
-//        console.log("Your browser supports a gamepad, why not connect one up?");
-//        var gamepad = new Gamepad();
-//        if (gamepad.init()) {
-//
-//            gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
-//                if (e.control === "HOME") {
-//                    removeTitleScreen();
-//                }
-//            });
-//        }
-//    }
 
-////////////////////////////////////////////////
-    var preloader;
-    var manifest;
-    var ship2;
-    var title;
-    var playGameb;
-    var controlb;
-    var optionb;
-    var controls;
-    var returnb;
-    var star1;
-    var xWing1;
-    var mutator1;
-////////////////////////////////////////////////
     this.init = function() {
         // Create the canvas-element
         myCanvas = document.createElement('canvas');
@@ -62,43 +117,6 @@
 
         stage = new window.createjs.Stage(myCanvas);
         window.stage = stage;
-
-/////////////////////////////////////////////////
-        manifest = [
-            {src:"Assets/ship2.png", id:"ship2"},
-            {src:"Assets/title.png", id:"title"},
-            {src:"Assets/playGame.png", id:"playGameb"},
-            {src:"Assets/controls.png", id:"controlb"},
-            {src:"Assets/options.png", id:"optionb"},
-            {src:"Assets/controlMenu.png", id:"controls"},
-            {src:"Assets/return.png", id:"returnb"},
-            {src:"Assets/Enemies/Stars/1.png", id:"star1"},
-            {src:"Assets/Enemies/XWings/1.png", id:"xWing1"},
-            {src:"Assets/Enemies/Mutators/1.png", id:"mutator1"}];
-        var queue = new window.createjs.LoadQueue();
-        window.queue = queue;
-
-        queue.installPlugin(window.createjs.Sound);
-        queue.addEventListener("fileload", handleFileLoad);
-        queue.addEventListener("complete", handleComplete);
-        queue.loadManifest(manifest);
-        queue.load();
-
-        function handleFileLoad(event) {
-            var item = event.item; // A reference to the item that was passed in
-            var type = item.type;
-
-            // Add any images to the page body.
-            if (type === window.createjs.LoadQueue.IMAGE) {
-                //document.body.appendChild(event.result);
-            }
-        }
-
-        function handleComplete(event) {
-
-        }
-////////////////////////////////////////////////
-//        stage.enableMouseOver();
         stage.mouseEventsEnabled = true;
         window.createjs.Ticker.setFPS(30);
 
@@ -108,7 +126,7 @@
     this.showTitleScreen = function() {
         TitleView = new createjs.Container();
 
-        var title = new createjs.Bitmap("Assets/title.png");
+        var title = new window.createjs.Bitmap(titleImage);
         title.x = (myCanvas.width / 2) - (title.image.width / 2);
         title.y = 160;
         title.name = 'title';
@@ -121,35 +139,29 @@
     };
 
     this.addMenu = function() {
-        var playGame = new window.createjs.Bitmap("Assets/playGame.png");
+        var playGame = new window.createjs.Bitmap(playGameImage);
         playGame.x = (myCanvas.width / 2) - (playGame.image.width / 2);
         playGame.y = 320;
         playGame.name = "playGame";
-
-        var controls = new window.createjs.Bitmap("Assets/controls.png");
-        controls.x = (myCanvas.width / 2) - (controls.image.width / 2);
-        controls.y = playGame.y + 30;
-        controls.name = "controls";
-
-        var options = new window.createjs.Bitmap("Assets/options.png");
-        options.x = (myCanvas.width / 2) - (options.image.width / 2);
-        options.y = controls.y + 30;
-        options.name = "options";
-        TitleView.addChild(playGame, controls, options);
-        stage.update();
-        // Button Listeners
 
         playGame.onClick = function() {
             removeMenu();
             removeTitleScreen();
             newGame();
         };
+        TitleView.addChild(playGame);
+
+        var controls = new window.createjs.Bitmap(controlsImage);
+        controls.x = (myCanvas.width / 2) - (controls.image.width / 2);
+        controls.y = 350;
+        controls.name = "controls";
 
         controls.onClick = function() {
 //            removeTitleScreen();
             removeMenu();
             showControls();
         };
+        TitleView.addChild(controls);
 
         options.onClick = function() {
 //            removeTitleScreen();
@@ -170,25 +182,24 @@
 
     this.showControls = function() {
         window.console.log("Showed controls");
-        var controls = new window.createjs.Bitmap("Assets/controlMenu.png");
+        var controls = new window.createjs.Bitmap(controlsMenuImage);
         controls.x = (myCanvas.width / 2) - (controls.image.width / 2);
         controls.y = 320;
-        controls.name = "controls";
+        controls.name = "controlsMenu";
 
-        var returnb = new window.createjs.Bitmap("Assets/return.png");
+        TitleView.addChild(controls);
+
+        var returnb = new window.createjs.Bitmap(returnImage);
         returnb.x = (myCanvas.width / 2) - (returnb.image.width / 2);
-        returnb.y = controls.y + controls.image.height + 30;
+        returnb.y = 500;
         returnb.name = "returnb";
-
-        TitleView.addChild(controls, returnb);
-        stage.update();
-
-        // Button Listeners
 
         returnb.onClick = function() {
             removeControls();
             addMenu();
         };
+
+        TitleView.addChild(returnb);
 
     };
 
@@ -203,8 +214,7 @@
 
     this.newGame = function () {
         if (ship === undefined) {
-                                    //image, health, speed, mass, bulletType, bulletSpeed, rateOfFire, rotationSpeed, stage
-            ship = new window.Ship("Assets/ship2.png", 100, 25, 5, "normal", 7, 10, 10, stage);
+            ship = new window.Ship(shipImage, 25, "normal", 7, 10, 10);
 
             window.createjs.Ticker.addListener(this);
             document.onkeydown = function(e) {

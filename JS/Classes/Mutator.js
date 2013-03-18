@@ -26,7 +26,7 @@
     // The initalize method register the class variables with the passed params
     Mutator.prototype.initialize = function (name, stage) {
         //call to initialize() method from parent class
-        this.Bitmap_initialize("Assets/Enemies/Mutators/1.png");
+        this.Bitmap_initialize(window.mutatorImage);
         this.name = name;
         this.snapToPixel = true;
         this.width = this.image.width;

@@ -19,7 +19,7 @@
     // The initalize method register the class variables with the passed params
     XWing.prototype.initialize = function (name, stage) {
         //call to initialize() method from parent class
-        this.Bitmap_initialize("Assets/Enemies/XWings/1.png");
+        this.Bitmap_initialize(window.xWingImage);
         this.name = name;
         this.snapToPixel = true;
         this.width = this.image.width;

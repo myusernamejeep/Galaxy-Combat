@@ -19,7 +19,7 @@
     // The initalize method register the class variables with the passed params
     Square.prototype.initialize = function (name, stage) {
         //call to initialize() method from parent class
-        this.Bitmap_initialize("Assets/Enemies/Squares/1.png");
+        this.Bitmap_initialize(window.squareImage);
         this.name = name;
         this.snapToPixel = true;
         this.width = this.image.width;
