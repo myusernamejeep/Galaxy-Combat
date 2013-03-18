@@ -14,6 +14,14 @@
             color: #5ab6cf;
         }
 
+        #highscore {
+            position: absolute;
+            z-index: 100;
+            left: 0px;
+            top: 20px;
+            color: #5ab6cf;
+        }
+
         #levels {
             position: absolute;
             z-index: 100;
@@ -26,6 +34,7 @@
 <body onLoad="loadAssets();">
     <div id="score">Score: 0</div>
     <div id="levels">Level: 0</div>
+    <div id="highscore">Highscore: 0</div>
 
     <script src="//code.createjs.com/easeljs-0.6.0.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
