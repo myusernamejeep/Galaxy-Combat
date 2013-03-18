@@ -54,19 +54,30 @@
         };
 
         Mutator.prototype.moveForward = function() {
-            var radians = this.rotation * (Math.PI / 180.0);
-            this.accX = Math.cos(radians) * this._speed;
-            this.accY = Math.sin(radians) * this._speed;
+            var p = window.ship,
+                a = this.rotation,
+                s = this._speed,
+                r = this.radius,
+                x = this.x,
+                y = this.y,
+                pi = Math.PI,
+                pi2 = pi* 2,
+                random = Math.random();
+            this.x+=(Math.sin(a)*s) / 2;
+            x = this.x;
+            this.y+=(Math.cos(a)*s) / 2;
+            y = this.y;
+            this.inBounds();
+            a = this.rotation;
 
-            // Update the horizontal position (x)
-            this.x += (this.accY) / 2;
-
-            // Update the vertical position (y)
-            // Subtracted because coordinate system starts in upper right
-            // and has positive y going downwards.
-            this.y -= (this.accX) / 2;
+            var ang=fixAngle(angleTo(this,p));
+            if ((a<ang && ang-a<pi) || (a>ang && ang-(a-pi2)<pi)){
+                this.rotation+=0.16;
+            }else {
+                this.rotation-=0.16;
+            }
+            this.rotation=fixAngle(this.rotation);
         };
-        this.rotation = (Math.floor(Math.random() * 360));
 
         Mutator.prototype.die = function() {
             this.createSquareEnemies(2);
