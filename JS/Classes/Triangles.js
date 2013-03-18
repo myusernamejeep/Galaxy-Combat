@@ -20,7 +20,7 @@
         this.regX = this.height/2;
         this.regY = this.width/2;
         this.stage = stage;
-        this.radius = Math.sqrt((this.height / 2)*(this.height / 2) + (this.width / 2) * (this.width / 2));
+        this.radius = this.regX;
         this._health = 100;
         this._speed = 10;
         this._rotationSpeed = 3;
