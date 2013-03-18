@@ -34,7 +34,7 @@ var Gamepad = function() {
 	this.gamepads = [];
 	this.listeners = {};
 	this.platform = null;
-	this.deadzone = 0.05;
+	this.deadzone = 0.25;
 	this.maximizeThreshold = 0.97;
 };
 
