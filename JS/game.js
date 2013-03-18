@@ -99,6 +99,20 @@
         if (gamepad.init()) {
             gamepad.bind(window.Gamepad.Event.BUTTON_UP, function(e) {
                 if (e.mapping === 16) {
+                    if (ship !== undefined) {
+                        if (ship._alive) {
+                            ship._alive = false;
+                        } else {
+                            window.removeMenu();
+                            window.removeTitleScreen();
+                            window.newGame();
+                        }
+
+                    } else {
+                        window.removeMenu();
+                        window.removeTitleScreen();
+                        window.newGame();
+                    }
                 }
             });
 
@@ -117,6 +131,8 @@
         stage = new window.createjs.Stage(myCanvas);
         window.stage = stage;
         stage.mouseEventsEnabled = true;
+        window.createjs.Ticker.addListener(window);
+        window.createjs.Ticker.useRAF = true;
         window.createjs.Ticker.setFPS(30);
 
         this.showTitleScreen();
@@ -159,10 +175,26 @@
         };
         TitleView.addChild(controls);
 
+
+//        var optionsImage = new Image();
+//        optionsImage.onload = onOptionsImageLoaded;
+//        optionsImage.src = "Assets/options.png";
+//        function onOptionsImageLoaded(e) {
+//            var options = new window.createjs.Bitmap(optionsImage);
+//            options.x = (myCanvas.width / 2) - (options.image.width / 2);
+//            options.y = 380;
+//            options.name = "options";
+//
+//            options.onClick = function() {
+//                window.removeMenu();
+//                window.showOptions();
+//            };
+//            TitleView.addChild(options);
+//        }
     };
 
     this.removeMenu = function() {
-        TitleView.removeChildAt(1,2,3);
+        TitleView.removeChildAt(1,2);
     };
 
     this.removeTitleScreen = function() {
@@ -195,11 +227,9 @@
         TitleView.removeChildAt(1,2);
     };
 
-    this.showOptions = function() {
-        window.console.log("Showed options");
-    };
-
     this.newGame = function () {
+        playing = true;
+        this.resetPoints();
         if (ship === undefined) {
             ship = new window.Ship(shipImage, 25, "normal", 7, 10, 10);
 
@@ -245,8 +275,17 @@
 
     this.gameOver = function() {
         stage.removeAllChildren();
+        //1111111111stage.update();
+        for (var i = enemies.length - 1; i >= 0; i--) {
+            enemies[i].die();
+        }
+        for (var j = enemies.length - 1; j >= 0; j--) {
+            enemies[j].die();
+        }
+//        enemies = [];
         level = 0;
         window.showTitleScreen();
+        playing = false;
     };
 
     this.createTriangleEnemies = function(amount, radiusFromShip) {
@@ -369,6 +408,13 @@
         var scoreDiv = document.getElementById("score");
         scoreDiv.innerText = "Score: " + score + " Bombs: " + ship.bombs;
     };
+
+    this.resetPoints = function() {
+        score = 0;
+        var scoreDiv = document.getElementById("score");
+        scoreDiv.innerText = "Score: " + score + " Bombs: ";
+    };
+
     this.allEnemiesDead = function() {
         if (enemies.length === 0) {
             this.updateBombs();
@@ -492,9 +538,10 @@
 
     this.tick = function(){
         stage.tick();
-        if (ship !== undefined) {
+        if (ship !== undefined && playing) {
             if (ship._alive) {
                 //////////
+                if (gamepad.gamepads[0] !== undefined) {
                     var rightXDelta = gamepad.gamepads[0].state.RIGHT_STICK_X;
                     var rightYDelta = gamepad.gamepads[0].state.RIGHT_STICK_Y;
                     var rightArcTangentRadians = Math.atan2(rightXDelta, rightYDelta);
@@ -528,6 +575,7 @@
                         gamepad.gamepads[0].state.LEFT_STICK_Y < -AXIS_THRESHOLD) {
                         ship.moveForward();
                     }
+                }
                 //////////
                 ship.checkMovement();
                 ship.checkBounds();
@@ -536,7 +584,7 @@
                 }
             }
             else {
-                gameOver();
+                this.gameOver();
             }
         }
         stage.update();
