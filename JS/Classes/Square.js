@@ -1,10 +1,3 @@
-/**
- * Created with JetBrains WebStorm.
- * User: jakechampion
- * Date: 08/03/2013
- * Time: 03:38
- * To change this template use File | Settings | File Templates.
- */
 (function (window) {
     // The class receives parameteres that are passed to the initialize method (constructor)
     function Square(name, stage) {

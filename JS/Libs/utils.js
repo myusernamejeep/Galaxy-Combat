@@ -1,10 +1,3 @@
-/**
- * Created with JetBrains WebStorm.
- * User: jakechampion
- * Date: 08/03/2013
- * Time: 17:13
- * To change this template use File | Settings | File Templates.
- */
 function angleTo(a,b){
     "use strict";
     var pi = Math.PI;

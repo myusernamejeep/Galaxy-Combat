@@ -1,10 +1,3 @@
-/**
- * Created with JetBrains WebStorm.
- * User: jakechampion
- * Date: 07/03/2013
- * Time: 21:47
- * To change this template use File | Settings | File Templates.
- */
 (function (window) {
     // The class receives parameteres that are passed to the initialize method (constructor)
     function XWing(name, stage) {
