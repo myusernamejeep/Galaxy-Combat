@@ -32,7 +32,7 @@
         this.radians;
 
         this.accX = 0;
-        this.accY= 0;
+        this.accY = 0;
         this.degree = degree;
 
         Bullet.prototype.setPosition = function(x,y) {
