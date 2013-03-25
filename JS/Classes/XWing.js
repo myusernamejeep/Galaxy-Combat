@@ -86,6 +86,7 @@
             stage.removeChild(this);
             var i = window.enemies.indexOf(this);
             window.enemies.splice(i,1);
+            window.console.log(this.name + " Died, position in array: " + i);
         };
 
         XWing.prototype.inBounds = function() {
@@ -118,6 +119,9 @@
     XWing.prototype._tick = function () {
         //call to _tick method from parent class
         this.Bitmap_tick();
+        if (!this._alive) {
+            this.die();
+        }
         this.facePlayer();
         this.inBounds();
         this.moveForward();

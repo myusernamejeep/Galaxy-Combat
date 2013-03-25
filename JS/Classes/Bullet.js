@@ -67,7 +67,8 @@
                 // rect with the size of the full collision, if false a rect with the size 1x1 is returned
 
                 if (collision) {
-                    window.enemies[i].die();
+                    window.enemies[i]._alive = false;
+//                    window.enemies[i].die();
                     this.die();
                     window.addPoints(11);
 

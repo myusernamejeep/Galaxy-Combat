@@ -67,7 +67,7 @@
             stage.removeChild(this);
             var i = window.enemies.indexOf(this);
             window.enemies.splice(i,1);
-            window.console.log(this.name + "Died");
+            window.console.log(this.name + " Died, position in array: " + i);
         };
 
         Star.prototype.inBounds = function() {
@@ -112,6 +112,9 @@
         //call to _tick method from parent class
         this.Bitmap_tick();
         //this.setRotation(Math.floor(Math.random() * 360));
+        if (!this._alive) {
+            this.die();
+        }
         if (this.isOutOfBounds()) {
             this.die();
         }

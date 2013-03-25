@@ -6,7 +6,7 @@
         create:function (name,value,days,path) {
             var date= new Date();
             date.setTime(date.getTime()+(days||365)*24*60*60*1000);
-            document.cookie = name+"="+escape (value )+"; expires="+date.toGMTString()+";path="+this.path;
+            document.cookie = name + "=" + escape(value) + "; expires=" + date.toGMTString() + ";path=" + this.path;
         },
         init:function (path) {
             this.path = path || location.pathname.substr(0,location.pathname.lastIndexOf("\/")+1);
@@ -23,7 +23,7 @@
             this.create(name,"",-1);
             this.values[name]=null;
         }
-    }
+    };
     C.init();
 
 
@@ -119,6 +119,7 @@
     var myCanvas;
     var TitleView;
     var level = 0;
+    var highlevel = parseInt(C.read("highlevel"))||0;
     var enemies = [];
     window.enemies = enemies;
     var previousWaveStartTime = window.now();
@@ -286,6 +287,8 @@
     this.newGame = function () {
         playing = true;
         this.resetPoints();
+        window.updateHighscore();
+        window.updateHighlevel();
         if (ship === undefined) {
             ship = new window.Ship(shipImage, 25, "normal", 7, 10, 10);
 
@@ -344,6 +347,62 @@
         playing = false;
     };
 
+    this.addPoints = function(amount) {
+        score += amount;
+        var scoreDiv = document.getElementById("score");
+        scoreDiv.innerText = "Score: " + score + " Bombs: " + ship.bombs;
+
+        if(score > highscore) {
+            highscore = score;
+            window.updateHighscore();
+        }
+    };
+
+    this.updateHighscore = function() {
+        document.getElementById("highscore").innerHTML = "Highscore: " + highscore;
+        C.create("highscore", highscore);
+    };
+
+    this.subtractPoints = function(amount) {
+        score -= amount;
+        var scoreDiv = document.getElementById("score");
+        scoreDiv.innerText = "Score: " + score + " Bombs: " + ship.bombs;
+    };
+
+    this.updateLevel = function() {
+        var levelDiv = document.getElementById("levels");
+        levelDiv.innerText = "Level: " + level + " ";
+        if(level > highlevel) {
+            highlevel = level;
+            window.updateHighlevel();
+        }
+    };
+
+    this.updateHighlevel = function() {
+        document.getElementById("highlevel").innerHTML = "Highest Wave: " + highlevel;
+        C.create("highlevel", highlevel);
+    };
+
+    this.updateBombs = function() {
+        var scoreDiv = document.getElementById("score");
+        scoreDiv.innerText = "Score: " + score + " Bombs: " + ship.bombs;
+    };
+
+    this.resetPoints = function() {
+        score = 0;
+        var scoreDiv = document.getElementById("score");
+        scoreDiv.innerText = "Score: " + score + " Bombs: ";
+    };
+
+    this.allEnemiesDead = function() {
+        if (enemies.length === 0) {
+            this.updateBombs();
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     this.createTriangleEnemies = function(amount, radiusFromShip) {
         var length = enemies.length;
         for (var i = 0; i < amount; i ++) {
@@ -395,11 +454,18 @@
                 }
             } else if (x < enemies[length + i].radius ||
                 x > stage.canvas.width - enemies[length + i]) {
-
+                while (ship.x - radiusFromShip < x && x < ship.x + radiusFromShip) {
+                    x = Math.floor(Math.random() * (myCanvas.width - enemies[length + i].radius));
+                }
             }
 
             if (y === undefined) {
                 var y = Math.floor(Math.random() * (myCanvas.height - enemies[length + i].radius));
+                while (ship.y - radiusFromShip < y && y < ship.y + radiusFromShip) {
+                    y = Math.floor(Math.random() * (myCanvas.height - enemies[length + i].radius));
+                }
+            } else if (y < enemies[length + i].radius ||
+                y > stage.canvas.height - enemies[length + i].radius) {
                 while (ship.y - radiusFromShip < y && y < ship.y + radiusFromShip) {
                     y = Math.floor(Math.random() * (myCanvas.height - enemies[length + i].radius));
                 }
@@ -430,93 +496,77 @@
         window.enemies = enemies;
     };
 
-    this.createMutatorEnemies = function(amount, radiusFromShip) {
+    this.createMutatorEnemies = function(amount, radiusFromShip, x, y) {
         var length = enemies.length;
         for (var i = 0; i < amount; i ++) {
             enemies.push(new window.Mutator("Mutator" + (i + 1) ,stage));
-            var x = Math.floor(Math.random() * (myCanvas.width - enemies[length + i].radius));
-            while (ship.x - radiusFromShip < x && x < ship.x + radiusFromShip) {
-                x = Math.floor(Math.random() * (myCanvas.width - enemies[length + i].radius));
+            if (x === undefined) {
+                var x = Math.floor(Math.random() * (myCanvas.width - enemies[length + i].radius));
+                while (ship.x - radiusFromShip < x && x < ship.x + radiusFromShip) {
+                    x = Math.floor(Math.random() * (myCanvas.width - enemies[length + i].radius));
+                }
+            } else if (x < enemies[length + i].radius ||
+                x > stage.canvas.width - enemies[length + i]) {
+                while (ship.x - radiusFromShip < x && x < ship.x + radiusFromShip) {
+                    x = Math.floor(Math.random() * (myCanvas.width - enemies[length + i].radius));
+                }
             }
 
-            var y = Math.floor(Math.random() * (myCanvas.height - enemies[length + i].radius));
-            while (ship.y - radiusFromShip < y && y < ship.y + radiusFromShip) {
-                y = Math.floor(Math.random() * (myCanvas.height - enemies[length + i].radius));
+            if (y === undefined) {
+                var y = Math.floor(Math.random() * (myCanvas.height - enemies[length + i].radius));
+                while (ship.y - radiusFromShip < y && y < ship.y + radiusFromShip) {
+                    y = Math.floor(Math.random() * (myCanvas.height - enemies[length + i].radius));
+                }
+            } else if (y < enemies[length + i].radius ||
+                y > stage.canvas.height - enemies[length + i].radius) {
+                while (ship.y - radiusFromShip < y && y < ship.y + radiusFromShip) {
+                    y = Math.floor(Math.random() * (myCanvas.height - enemies[length + i].radius));
+                }
             }
-
             enemies[length + i].setPosition(x, y);
             stage.addChild(enemies[length + i]);
         }
         window.enemies = enemies;
     };
 
-    this.addPoints = function(amount) {
-        score += amount;
-        var scoreDiv = document.getElementById("score");
-        scoreDiv.innerText = "Score: " + score + " Bombs: " + ship.bombs;
-
-        if(score > highscore) {
-            highscore = score;
-            window.updateHighscore();
-        }
+    this.createMutatorsFromCorners = function(amount) {
+        this.createMutatorEnemies(amount,100, 20, 20);
+        this.createMutatorEnemies(amount,100, stage.canvas.width - 20, 20);
+        this.createMutatorEnemies(amount,100, 20, stage.canvas.height - 20);
+        this.createMutatorEnemies(amount,100, stage.canvas.width - 20, stage.canvas.height - 20);
     };
 
-    this.updateHighscore = function() {
-        document.getElementById("highscore").innerHTML = "Highscore: " + highscore;
-        C.create("highscore", highscore);
-    };
-
-    this.subtractPoints = function(amount) {
-        score -= amount;
-        var scoreDiv = document.getElementById("score");
-        scoreDiv.innerText = "Score: " + score + " Bombs: " + ship.bombs;
-    };
-
-    this.updateLevel = function() {
-        var levelDiv = document.getElementById("levels");
-        levelDiv.innerText = "Level: " + level + " ";
-    };
-
-    this.updateBombs = function() {
-        var scoreDiv = document.getElementById("score");
-        scoreDiv.innerText = "Score: " + score + " Bombs: " + ship.bombs;
-    };
-
-    this.resetPoints = function() {
-        score = 0;
-        var scoreDiv = document.getElementById("score");
-        scoreDiv.innerText = "Score: " + score + " Bombs: ";
-    };
-
-    this.allEnemiesDead = function() {
-        if (enemies.length === 0) {
-            this.updateBombs();
-            return true;
-        } else {
-            return false;
-        }
+    this.createStarsFromCorners = function(amount) {
+        this.createStarEnemies(amount,100, 20, 20);
+        this.createStarEnemies(amount,100, stage.canvas.width - 20, 20);
+        this.createStarEnemies(amount,100, 20, stage.canvas.height - 20);
+        this.createStarEnemies(amount,100, stage.canvas.width - 20, stage.canvas.height - 20);
     };
 
     this.createLevel = function(level) {
         switch(level) {
             case 1:
-                this.createStarEnemies(1,100);
+                window.createStarsFromCorners(5);
                 break;
             case 2:
-                this.createXWingEnemies(2,100);
+                this.createXWingEnemies(10,100);
                 break;
             case 3:
-                this.createSquareEnemies(3,100);
+                this.createSquareEnemies(10,100);
                 break;
             case 4:
-                this.createMutatorEnemies(4,100);
+                for (var i = 1; i <= 10; i++) {
+                    this.createMutatorEnemies(1, 100, (100 * i), 10);
+                }
                 break;
             case 5:
                 this.createTriangleEnemies(5,100);
                 break;
             case 6:
-                this.createLevel(1);
-                this.createLevel(1);
+//                this.createLevel(1);
+                for (var i = 1; i <= 10; i++) {
+                    this.createStarEnemies(1,100, (100 * i), 10);
+                }
                 break;
             case 7:
                 this.createLevel(1);
@@ -528,7 +578,7 @@
                 break;
             case 9:
                 this.createLevel(1);
-                this.createLevel(4);
+                this.createMutatorsFromCorners(5);
                 break;
             case 10:
                 this.createLevel(1);

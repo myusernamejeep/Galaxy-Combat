@@ -85,7 +85,7 @@
             stage.removeChild(this);
             var i = window.enemies.indexOf(this);
             window.enemies.splice(i,1);
-            window.console.log(this.name + "Died");
+            window.console.log(this.name + " Died, position in array: " + i);
         };
 
         Triangle.prototype.inBounds = function() {
@@ -131,6 +131,9 @@
         //call to _tick method from parent class
         this.Bitmap_tick();
        // this.facePlayer();
+        if (!this._alive) {
+            this.die();
+        }
         if (this.isOutOfBounds()) {
             this.die();
         }

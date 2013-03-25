@@ -29,16 +29,59 @@
             top: 0px;
             color: #5ab6cf;
         }
+
+        #highlevel {
+            position: absolute;
+            z-index: 100;
+            right: 0px;
+            top: 20px;
+            color: #5ab6cf;
+        }
     </style>
 </head>
 <body onLoad="loadAssets();">
     <div id="score">Score: 0</div>
-    <div id="levels">Level: 0</div>
     <div id="highscore">Highscore: 0</div>
+    <div id="levels">Wave: 0</div>
+    <div id="highlevel">Highest Wave: 0</div>
 
-    <script src="//code.createjs.com/easeljs-0.6.0.min.js"></script>
+
+    <script src="JS/Libs/easeljs/events/EventDispatcher.js"></script>
+    <script src="JS/Libs/easeljs/utils/UID.js"></script>
+    <script src="JS/Libs/easeljs/geom/Matrix2D.js"></script>
+    <script src="JS/Libs/easeljs/display/DisplayObject.js"></script>
+    <script src="JS/Libs/easeljs/display/Container.js"></script>
+    <script src="JS/Libs/easeljs/display/Stage.js"></script>
+    <script src="JS/Libs/easeljs/display/Bitmap.js"></script>
+    <script src="JS/Libs/easeljs/display/BitmapAnimation.js"></script>
+    <script src="JS/Libs/easeljs/display/Shape.js"></script>
+    <script src="JS/Libs/easeljs/display/Graphics.js"></script>
+    <script src="JS/Libs/easeljs/display/Text.js"></script>
+    <script src="JS/Libs/easeljs/display/DOMElement.js"></script>
+    <script src="JS/Libs/easeljs/filters/Filter.js"></script>
+    <script src="JS/Libs/easeljs/display/Shadow.js"></script>
+    <script src="JS/Libs/easeljs/utils/Ticker.js"></script>
+    <script src="JS/Libs/easeljs/display/SpriteSheet.js"></script>
+    <script src="JS/Libs/easeljs/utils/SpriteSheetUtils.js"></script>
+    <script src="JS/Libs/easeljs/utils/SpriteSheetBuilder.js"></script>
+    <script src="JS/Libs/easeljs/geom/Rectangle.js"></script>
+    <script src="JS/Libs/easeljs/geom/Point.js"></script>
+    <script src="JS/Libs/easeljs/events/MouseEvent.js"></script>
+    <script src="JS/Libs/easeljs/filters/AlphaMapFilter.js"></script>
+    <script src="JS/Libs/easeljs/filters/AlphaMaskFilter.js"></script>
+    <script src="JS/Libs/easeljs/filters/BoxBlurFilter.js"></script>
+    <script src="JS/Libs/easeljs/filters/ColorFilter.js"></script>
+    <script src="JS/Libs/easeljs/filters/ColorMatrix.js"></script>
+    <script src="JS/Libs/easeljs/filters/ColorMatrixFilter.js"></script>
+    <script src="JS/Libs/easeljs/ui/ButtonHelper.js"></script>
+    <script src="JS/Libs/easeljs/ui/Touch.js"></script>
+    <script src="JS/Libs/easeljs/utils/Log.js"></script>
+    <script src="JS/Libs/easeljs/version.js"></script>
+    <script src="JS/Libs/easeljs/version_movieclip.js"></script>
+
+
+    <!--<script src="//code.createjs.com/easeljs-0.6.0.min.js"></script>-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="//code.createjs.com/preloadjs-0.3.0.min.js"></script>
     <script src="JS/Libs/modernizr.custom.06733.js"></script>
     <script src="JS/Libs/ndgmr.Collision.js"></script>
     <script src="JS/Libs/gamepad.js"></script>
